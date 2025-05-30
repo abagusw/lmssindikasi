@@ -44,6 +44,10 @@ Options -Indexes
 	ErrorDocument 404 index.php
 </IfModule>
 
+<IfModule mod_lsapi>
+  AddHandler application/x-httpd-php81___lsphp .php
+</IfModule>
+
 # Disable server signature start
 ServerSignature Off
 # Disable server signature end
