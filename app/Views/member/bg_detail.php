@@ -35,7 +35,26 @@ function tanggal_indonesia($tanggal)
   <div class="col-lg-12">
                 <div class="card card-warning card-outline mb-4">
                   <!--begin::Header-->
-                  <div class="card-header"><div class="card-title">Member Detail</div></div>
+                  <div class="card-header">
+                    <div class="card-title">Member Detail</div>
+                  </div>
+
+                  <?php if($getData['flag'] == 1){
+                    $stLb = "<div class='alert alert-info' role='alert'>
+                      Data has been approved.
+                    </div>";
+                  }elseif($getData['flag'] == 2){
+                    $stLb = "<div class='alert alert-danger' role='alert'>
+                     Data has been rejected</a>.
+                    </div>";
+                  }else{
+                    $stLb = "";
+                  }
+
+                  ?>
+
+                  <?php echo $stLb;  ?>
+
                   <!--end::Header-->
                   <!--begin::Form-->
                   <form>
@@ -125,13 +144,16 @@ function tanggal_indonesia($tanggal)
                         </div>
                       </div>
                     </div>
+                    <?php
+                    if($getData['flag'] == 0){
+                      ?>
                     <!--end::Body-->
                     <!--begin::Footer-->
                     <div class="card-footer">
                       <a class="btn btn-danger" href="#!" onclick="ubahStatus(2,<?php echo $getData['id']; ?>)">Reject</a>
                       <a class="btn btn-primary" onclick="ubahStatus(1,<?php echo $getData['id']; ?>)">Approve</a>
                       
-                    </div>
+                    </div> <?php } ?>
                     <!--end::Footer-->
                   </form>
                   <!--end::Form-->

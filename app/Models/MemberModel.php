@@ -31,7 +31,10 @@ class MemberModel extends Model
         $orderDir = $request->getPost('order')[0]['dir'] ?? 'asc';
 
         $builder = $this->db->table($this->table);
-        $builder->where('flag', $flag);
+        if($flag == 1){
+           $builder->where('flag', $flag); 
+        }
+        
 
         // Search filter
         if (!empty($searchValue)) {
