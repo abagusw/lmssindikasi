@@ -3,7 +3,7 @@
 <?= $this->section('content'); ?>
 <?php $uri = service('uri');
                 
-$flag = $uri->getSegment(3); ?>
+$flag = $uri->getSegment(2); ?>
 <div class="row">
   <!--begin::Col-->
   <div class="col-lg-3 col-6">
@@ -134,16 +134,7 @@ $flag = $uri->getSegment(3); ?>
                   <th>Email</th>
                   <th>City Domicile</th>
                   <th>Job Title</th>
-                  <?php
-                  if($flag == '0'){
-                    echo"
-                    <th>Register Date</th>
-                    ";
-                  }else{
-                    echo"
-                  <th>Activation Date</th>
-                  <th>Last Update</th>";}
-                  ?>
+                  <th>Register Date</th>"
                   <th>Status</th>
                   <th>Action</th>
               </tr>
@@ -178,8 +169,6 @@ $flag = $uri->getSegment(3); ?>
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ambil token dari meta tag
             }
         });
-
-        var flag = <?php echo $flag; ?> 
         //datatables
         table = $('#example').DataTable({ 
             
@@ -188,7 +177,7 @@ $flag = $uri->getSegment(3); ?>
             "order": [], 
              
             "ajax": {
-                "url": "<?php echo base_url('member/getDataMember')?>/"+flag,
+                "url": "<?php echo base_url('member/getDataMemberReg')?>",
                 "type": "POST",
                 "data": function(d) {
                     d['<?= csrf_token() ?>'] = '<?= csrf_hash() ?>';

@@ -163,46 +163,6 @@ function tanggal_indonesia($tanggal)
 </div>
 
 
-<script type="text/javascript">
-    var table;
-    $(document).ready(function() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ambil token dari meta tag
-            }
-        });
-
-        var flag = <?php echo $flag; ?> 
-        //datatables
-        table = $('#example').DataTable({ 
-            
-            "processing": true, 
-            "serverSide": true, 
-            "order": [], 
-             
-            "ajax": {
-                "url": "<?php echo base_url('member/getDataMember')?>/"+flag,
-                "type": "POST",
-                "data": function(d) {
-                    d['<?= csrf_token() ?>'] = '<?= csrf_hash() ?>';
-                },
-
-            },
- 
-             
-            "columnDefs": [
-            { 
-                "targets": [ 0 ], 
-                "orderable": false, 
-            },
-            ],
- 
-        });
- 
-    });
-
-
-</script>
 
 <script>
       function ubahStatus(flag,id){
@@ -214,7 +174,7 @@ function tanggal_indonesia($tanggal)
             dataType: 'JSON',
             success: function(response) {
               if(response.msg == 0){
-                top.location.href="<?php echo base_url('member/')?>"+flag;
+                top.location.href="<?php echo base_url('member/registration')?>";
 
                 $.ambiance({message: "Data sukses disimpan",
                   type: "success",
