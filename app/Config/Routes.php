@@ -1,8 +1,6 @@
 <?php
 
 use CodeIgniter\Router\RouteCollection;
-$routes->setAutoRoute(true);
-$routes->setAutoRoute('legacy');
 
 
 /**
@@ -25,6 +23,8 @@ $routes->get('/midtrans/checkout', function() {
 
 $routes->get('payment/pay','MidtransController::index');
 
+$routes->get('setup/setpassword','Setup::setPassword');
+
 
 $routes->group('/', ['filter' => 'auth'], function ($routes) {
 
@@ -44,8 +44,12 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->patch('user/(:segment)/changestatus', 'User::changeStatus/$1');
 
 	//Routes member Reg//
-	$routes->get('member/(:segment)','Member::index/$1');
-	$routes->post('member/getDataMember/(:segment)','Member::getDataMember/$1');
+	$routes->get('member/user/(:any)','Member::index/$1');
+	
+	$routes->post('member/getDataMember/(:any)','Member::getDataMember/$1');
+	$routes->post('member/getDataMemberReg','Member::getDataMemberReg');
+	$routes->get('member/registration','Member::indexReg');
+	
 	$routes->get('member/getDataMemberDetail/(:segment)','Member::getDataMemberDetail/$1');
 	$routes->post('member/ubahStatus','Member::ubahStatus');
 	$routes->get('member/templateEmail','Member::templateEmail');

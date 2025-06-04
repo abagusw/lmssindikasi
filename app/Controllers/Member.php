@@ -11,6 +11,8 @@ use App\Libraries\SendEmail;
 
 class Member extends BaseController
 {
+    protected $userModel;
+    protected $memberModel;
     public function __construct()
     {
         $this->userModel = new UserModel();
@@ -32,10 +34,26 @@ class Member extends BaseController
             'memberActive' => $this->memberModel->countMemberByFlag(1),
             'memberAll' => $this->memberModel->countMemberAll(),
             'getData' => $this->memberModel->where('flag', '1')->findAll(),
-            'session' => \Config\Services::session()
         ];
 
         return view('member/bg_index', $data);
+    }
+
+    public function indexReg(){
+        log_message('debug', 'Route /admin matched');
+
+        $uri = service('uri');
+        $flag = $uri->getSegment(2);
+
+        $data = [
+            'title' => 'Member Registration',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'memberActive' => $this->memberModel->countMemberByFlag(1),
+            'memberAll' => $this->memberModel->countMemberAll(),
+            'getData' => $this->memberModel->where('flag', '1')->findAll(),
+        ];
+
+        return view('member/bg_reg', $data);        
     }
 
     public function getDataMember(){
@@ -57,8 +75,12 @@ class Member extends BaseController
                         $row[] = $field->email;
                         $row[] = $field->domisili;
                         $row[] = $field->profesi;
-                        $row[] = $field->approval_date;
-                        $row[] = $field->updated_at;
+                        if($flag == 0){
+                            $row[] = $field->create_at;
+                        }else{
+                            $row[] = $field->approval_date;
+                            $row[] = $field->updated_at;
+                        }
                         if($field->flag == 0){
                             $st = "<span class='badge rounded-pill text-bg-secondary'>Pending</span>";
                         }elseif($field->flag == 1){
@@ -89,6 +111,58 @@ class Member extends BaseController
                 //output dalam format JSON
                 echo json_encode($output);
     }
+
+    public function getDataMemberReg(){
+                //$uri = service('uri');
+                $flag = 0;
+
+                // print_r("disini");
+                // die;
+               //$list = $this->User_model->get_datatables();
+                $memberModel = new MemberModel();
+                $list = $memberModel->getDatatables($flag);
+                $data = array();
+                $no = $_POST['start'];
+                foreach ($list as $field) {
+                        $no++;
+                        $row = array();
+                        $row[] = $no;
+                        $row[] = $field->nama_lengkap;
+                        $row[] = $field->email;
+                        $row[] = $field->domisili;
+                        $row[] = $field->profesi;
+                        $row[] = $field->create_at;
+                        if($field->flag == 0){
+                            $st = "<span class='badge rounded-pill text-bg-secondary'>Pending</span>";
+                        }elseif($field->flag == 1){
+                            $st = "<span class='badge rounded-pill text-bg-success'>Approved</span>";
+                        }else{
+                            $st = "<span class='badge rounded-pill text-bg-danger'>Rejected</span>";
+                        }
+
+                        if($field->flag == 1){
+                            $btnResend = "<a href=".base_url("email/kirimEmailApprove/".$field->id."")." class='btn btn-link mb-2'>Resend</a>";
+                        }else{
+                            $btnResend = "";
+                        }
+                        $row[] = $st;
+                        $row[] = "<a href=".base_url("member/getDataMemberDetail/".$field->id."")." class='btn btn-link mb-2'>View</a>
+                        <a type='a' class='btn btn-link mb-2'>Approval</a> ".$btnResend."";
+                        $data[] = $row;
+                }
+ 
+                $output = array(
+                        'draw' => intval($this->request->getPost('draw')),
+                        'recordsTotal' => $memberModel->countAll(),
+                        'recordsFiltered' => $memberModel->countFiltered($flag),
+                        "data" => $data,
+                );
+
+               // return $output;
+                //output dalam format JSON
+                echo json_encode($output);
+    }        
+
 
     public function getDataMemberDetail(){
         $uri = service('uri');

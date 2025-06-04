@@ -7,6 +7,7 @@ use App\Models\MemberModel;
 use App\Models\LogModel;
 use CodeIgniter\Email\Email;
 
+
 class SendEmailCon extends BaseController
 {
     public function __construct()
@@ -85,6 +86,7 @@ class SendEmailCon extends BaseController
     }
 
     public function kirimEmailApprove(){
+
         $uri = service('uri');
         $id = $uri->getSegment(3);
         $getData = $this->memberModel->find($id);
@@ -97,7 +99,7 @@ class SendEmailCon extends BaseController
         $vw = view('email/bg_approve', $data);
         $this->konfigEmail($getData['email'],'Akun Anda Telah Disetujui',$vw);
 
-        return redirect()->to('/member/1');
+        return redirect()->to('/member/user/1');
 
         //print_r($getData)
 
@@ -117,7 +119,7 @@ class SendEmailCon extends BaseController
         $vw = view('email/bg_reject', $data);
         $this->konfigEmail($getData['email'],'Akun Anda ditolak / direject',$vw);
 
-        return redirect()->to('/member/0');
+        return redirect()->to('member/registration');
 
         //print_r($getData)
 

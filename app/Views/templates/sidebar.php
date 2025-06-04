@@ -43,13 +43,13 @@
               </li>
               <li class="nav-header">MEMBERSHIP</li>
               <li class="nav-item">
-                <a href="<?= base_url() ?>member/0" class="nav-link">
+                <a href="<?= base_url() ?>member/registration" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Registration</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url() ?>member/1" class="nav-link">
+                <a href="<?= base_url() ?>member/user/1" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>User</p>
                 </a>
