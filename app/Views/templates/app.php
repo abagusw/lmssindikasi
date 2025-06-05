@@ -62,6 +62,8 @@
 
     <link href="<?=ASSETS_URL?>data-tables/dataTables.dataTables.min.css" rel="stylesheet" type="text/css" />
     <link href="<?=ASSETS_URL?>compo_notif/jquery.ambiance.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
  
 
      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

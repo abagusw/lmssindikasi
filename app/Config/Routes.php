@@ -21,7 +21,7 @@ $routes->get('/midtrans/checkout', function() {
     return view('coba_midtrans/midtrans_checkout');
 });
 
-$routes->get('payment/pay','MidtransController::index');
+$routes->get('paymentXXX/pay','MidtransController::index');
 
 $routes->get('setup/setpassword','Setup::setPassword');
 
@@ -73,6 +73,11 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->post('master/simpanCity','Master::simpanCity');
 	$routes->post('master/simpanEditCity','Master::simpanEditCity');
 	$routes->post('master/hapusDataCity','Master::hapusDataCity');
+
+
+	//Routes Payment//
+	$routes->get('payment/index','Payment::index');
+	$routes->post('payment/getPayment','Payment::getPayment');
 
 
 
