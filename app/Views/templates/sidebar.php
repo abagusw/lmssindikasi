@@ -30,7 +30,7 @@
               </li>
               <li class="nav-header">PAYMENT</li>
               <li class="nav-item">
-                <a href="<?= base_url() ?>member/0" class="nav-link">
+                <a href="<?= base_url() ?>payment/index" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Payment List</p>
                 </a>

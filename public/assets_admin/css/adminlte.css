@@ -15376,4 +15376,70 @@ html.maximized-card {
   width: 32px;
 }
 
+.icon-link {
+  width: 40px; /* Perbesar agar ikon tidak terpotong */
+  height: 40px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.icon-link:hover {
+  border-color: #bbb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: row; /* Ini bikin jadi menyamping */
+  gap: 10px;
+}
+
+.icon-link i {
+  font-size: 18px;
+  color: #333;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 15px;
+}
+
+.summary-cards .col-md-3 {
+  padding: 0;
+}
+
+.card-box {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.card-box .label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-box .value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+}
+
+.card-box i {
+  font-size: 14px;
+  color: #888;
+}
 /*# sourceMappingURL=adminlte.css.map */
