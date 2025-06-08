@@ -15442,4 +15442,35 @@ html.maximized-card {
   font-size: 14px;
   color: #888;
 }
+
+/* Efek hover untuk tombol */
+.btn-hover-outline:hover {
+  background-color: #f1f1f1;
+  border-color: #ccc;
+  color: #333;
+}
+
+/* Tambahan untuk efek hover icon */
+.btn-hover-outline i {
+  transition: color 0.2s ease;
+}
+
+.btn-hover-outline:hover i {
+  color: #000;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.btn-orange {
+  background-color: #f26522;
+}
+
+.btn-orange:hover {
+  background-color: #d8561d;
+}
+
+
 /*# sourceMappingURL=adminlte.css.map */

@@ -134,16 +134,8 @@ $flag = $uri->getSegment(3); ?>
                   <th>Email</th>
                   <th>City Domicile</th>
                   <th>Job Title</th>
-                  <?php
-                  if($flag == '0'){
-                    echo"
-                    <th>Register Date</th>
-                    ";
-                  }else{
-                    echo"
                   <th>Activation Date</th>
-                  <th>Last Update</th>";}
-                  ?>
+                  <th>Last Update</th>
                   <th>Status</th>
                   <th>Action</th>
               </tr>
@@ -208,4 +200,98 @@ $flag = $uri->getSegment(3); ?>
  
     });
 </script>
+
+<script>
+      function kirimEmail(id,url){
+        $.ambiance({message: "Email sukses dikirim",
+                  type: "success",
+                  fade: false});
+        $.ajax({
+            type: 'POST',
+            data: {url:url,id:id},
+            url: "<?php echo base_url('member/kirimEmail')?>",
+            async: false,
+            dataType: 'JSON',
+            success: function(msg) {
+              location.reload();
+              // if(response.msg == 0){
+              //   $.ambiance({message: "Email sukses dikirim",
+              //     type: "success",
+              //     fade: false});
+                
+              // }else{
+              //   $.ambiance({message: "Email gagal dikirim",
+              //     type: "error",
+              //     fade: false});
+              // }
+            }
+
+        });
+    }
+
+    function confirmStatusData(id,flag){
+      if(flag == 0){
+        $("#resendActivationLabel").html("Resend Activation");
+        $("#btnStatusData").html("Resend");
+      }else if(flag == 1){
+        $("#resendActivationLabel").html("Confirm Deactivation");
+        $("#btnStatusData").html("Deactivate");
+      }else{
+        $("#resendActivationLabel").html("Confirm Account Reactivation");
+        $("#btnStatusData").html("Reactive");
+      }
+        $.ajax({
+            type: 'POST',
+            data: {flag:flag,id:id},
+            url: "<?php echo base_url('member/confirmStatusData')?>",
+            async: false,
+            dataType: 'JSON',
+            success: function(msg) {
+              $("#bodyModalStatusData").html(msg.msg);
+              if(flag == 0){
+                //jika status pending maka kiirm email saja (resend)
+                $("#btnStatusData").attr('onclick','kirimEmail('+id+','+msg.url+')');
+              }else{
+                $("#btnStatusData").attr('onclick','ubahStatusDataUser('+id+','+flag+')');
+                //ubahStatusDataUser(id,flag);
+              }
+            }
+
+        });     
+    }
+
+    function ubahStatusDataUser(id,flag){
+        if(flag == '2'){
+          flag = '1'
+        }else if(flag == '1'){
+          flag = '2'
+        }else{
+          flag = '0';
+        }
+        $.ajax({
+            type: 'POST',
+            data: {flag:flag,id:id},
+            url: "<?php echo base_url('member/ubahStatusDataUser')?>",
+            async: false,
+            dataType: 'JSON',
+            success: function(response) {
+              if(response.msg == 0){
+                $.ambiance({message: "Status sukses diupdate",
+                  type: "success",
+                  fade: false});
+                location.reload();
+              }else{
+                $.ambiance({message: "Status gagal diupdate",
+                  type: "error",
+                  fade: false});
+              }
+            }
+
+        });      
+
+    }
+</script>
+
+
+
 <?= $this->endSection(); ?>

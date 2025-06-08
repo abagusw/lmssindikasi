@@ -94,7 +94,7 @@
                 <i class="bi bi-list"></i>
               </a>
             </li>
-            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
+            <li class="nav-item d-none d-md-block"><a href="<?= base_url() ?>" class="nav-link">Home</a></li>
             <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
           </ul>
           <!--end::Start Navbar Links-->
@@ -187,7 +187,7 @@
               <div class="col-sm-6"><h3 class="mb-0"><?= $title; ?></h3></div>
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
                   <li class="breadcrumb-item active" aria-current="page"><?= $title; ?></li>
                 </ol>
               </div>
@@ -226,6 +226,25 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                 <button type="button" id='btnDelete' name='btnDelete' class="btn btn-danger">Hapus</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="modalStatusData" tabindex="-1" aria-labelledby="resendActivationLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content p-3">
+            <div class="modal-header border-0">
+              <h5 class="modal-title fw-bold" id="resendActivationLabel"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="bodyModalStatusData">
+
+            </div>
+            <div class="modal-footer border-0 justify-content-end">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="btnStatusData" class="btn btn-orange text-white">✓ Resend</button>
             </div>
           </div>
         </div>

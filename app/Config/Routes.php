@@ -50,9 +50,17 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->post('member/getDataMemberReg','Member::getDataMemberReg');
 	$routes->get('member/registration','Member::indexReg');
 	
-	$routes->get('member/getDataMemberDetail/(:segment)','Member::getDataMemberDetail/$1');
+	$routes->get('member/member_detail/(:segment)','Member::getDataMemberDetail/$1');
+	$routes->get('member/member_user_detail/(:segment)','Member::getDataUserDetail/$1');
 	$routes->post('member/ubahStatus','Member::ubahStatus');
 	$routes->get('member/templateEmail','Member::templateEmail');
+	$routes->post('member/kirimEmail','Member::kirimEmail');
+	$routes->post('member/confirmStatusData','Member::confirmStatusData');
+	$routes->post('member/getpaymentDetailUser','Member::getpaymentDetailUser');
+	$routes->post('member/ubahStatusDataUser','Member::ubahStatusDataUser');
+	
+
+	
 
 
 	

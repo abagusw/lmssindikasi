@@ -89,6 +89,13 @@ class MemberModel extends Model
         return $query;
     }
 
+    public function countMemberUserByFlag($flag){
+        $builder = $this->db->table('tb_member');
+        $builder->where('flag_active', $flag);
+        $query = $builder->get()->getNumRows();
+        return $query;
+    }
+
     public function countMemberAll(){
         $builder = $this->db->table('tb_member');
         $query = $builder->get()->getNumRows();

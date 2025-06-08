@@ -197,4 +197,32 @@ $flag = $uri->getSegment(2); ?>
  
     });
 </script>
+
+
+<script>
+      function ubahStatus(flag,id){
+        $.ajax({
+            type: 'POST',
+            data: {flag:flag,id:id},
+            url: "<?php echo base_url('member/ubahStatus')?>",
+            async: false,
+            dataType: 'JSON',
+            success: function(response) {
+              if(response.msg == 0){
+                top.location.href="<?php echo base_url('member/registration')?>";
+
+                $.ambiance({message: "Data sukses disimpan",
+                  type: "success",
+                  fade: false});
+                
+              }else{
+                $.ambiance({message: "Data gagal disimpan",
+                  type: "error",
+                  fade: false});
+              }
+            }
+
+        });
+    }
+</script>
 <?= $this->endSection(); ?>
