@@ -41,11 +41,11 @@ function tanggal_indonesia($tanggal)
 
       <?php if($getData['flag'] == 1){
         $stLb = "<div class='alert alert-info' role='alert'>
-          Data has been approved.
+          Member has been approved.
         </div>";
       }elseif($getData['flag'] == 2){
         $stLb = "<div class='alert alert-danger' role='alert'>
-         Data has been rejected</a>.
+         Member has been rejected</a>.
         </div>";
       }else{
         $stLb = "";

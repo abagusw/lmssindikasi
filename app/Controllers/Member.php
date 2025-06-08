@@ -50,7 +50,7 @@ class Member extends BaseController
         $data = [
             'title' => 'Member Registration',
             'user_logged_in' => $this->userModel->find($this->session->get('id')),
-            'memberActive' => $this->memberModel->countMemberByFlag(1),
+            'memberActive' => $this->memberModel->countMemberUserByFlag(1),
             'memberAll' => $this->memberModel->countMemberAll(),
             'getData' => $this->memberModel->where('flag', '1')->findAll(),
         ];
