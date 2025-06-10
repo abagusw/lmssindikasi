@@ -70,7 +70,7 @@
       <p>Anda sekarang dapat login ke sistem dan menggunakan semua fitur yang tersedia.</p>
 
       <p style="text-align: center;">
-        <a href="<?= base_url() ?>setup/setpassword/" class="button">Atur Password Sekarang</a>
+        <a href="<?= base_url() ?>setup/setpassword/<?= $getData['id'] ?>" class="button">Atur Password Sekarang</a>
       </p>
 
       <p>Jika Anda merasa tidak melakukan pendaftaran, abaikan email ini.</p>

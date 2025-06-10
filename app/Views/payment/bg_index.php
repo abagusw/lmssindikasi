@@ -110,7 +110,7 @@
             "order": [], 
              
             "ajax": {
-                "url": "<?php echo base_url('payment/getpayment')?>",
+                "url": "<?php echo base_url('payment/getPayment')?>",
                 "type": "POST",
                 "data": function(d) {
                     d['<?= csrf_token() ?>'] = '<?= csrf_hash() ?>';

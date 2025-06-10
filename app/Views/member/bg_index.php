@@ -290,6 +290,39 @@ $flag = $uri->getSegment(3); ?>
         });      
 
     }
+
+    function confirmResetPassword(id){
+      $('#btnConfirmResetPassword').attr('onclick','resetPassword('+id+')');
+        $.ajax({
+            type: 'POST',
+            data: {id:id},
+            url: "<?php echo base_url('member/confirmResetPassword')?>",
+            async: false,
+            dataType: 'JSON',
+            success: function(response) {
+              $('#userNameResetPassword').html(response.msg);
+
+            }
+
+        });       
+    }
+
+    function resetPassword(id){
+        $.ajax({
+            type: 'POST',
+            data: {id:id},
+            url: "<?php echo base_url('member/resetPassword')?>",
+            async: false,
+            dataType: 'JSON',
+            success: function(response) {
+                $.ambiance({message: "Email berhasil dikirim",
+                  type: "success",
+                  fade: false});
+                location.reload();
+            }
+
+        });      
+    }    
 </script>
 
 

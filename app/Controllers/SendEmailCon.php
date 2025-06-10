@@ -126,6 +126,26 @@ class SendEmailCon extends BaseController
         //return view('email/bg_approve', $data);        
     }
 
+    public function kirimEmailResetPassword(){
+        $uri = service('uri');
+        $id = $uri->getSegment(3);
+        $getData = $this->memberModel->find($id);
+        $data = [
+            'title' => 'Reset Password',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->memberModel->find($id),
+            'session' => \Config\Services::session()
+        ];
+        $vw = view('email/bg_reset_password', $data);
+        $this->konfigEmail($getData['email'],'Reset Password akun anda',$vw);
+
+        return redirect()->to('member/user/1');
+
+        //print_r($getData)
+
+        //return view('email/bg_approve', $data);        
+    }
+
 
 
 }

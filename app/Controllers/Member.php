@@ -97,7 +97,7 @@ class Member extends BaseController
                             $drBtn = "<li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$field->id.",".$field->flag_active.") class='dropdown-item'>Resend Activation</a></li>";
                         }elseif($field->flag_active == 1){
                             $drBtn = "<li><a href='".base_url("member/member_user_detail/".$field->id."")."?payment_history=true' class='dropdown-item'><i class='bi bi-clock'></i>Payment History</a></li>
-                                <li><a href='".base_url("member/reset_password/".$field->id."")."' class='dropdown-item'><i class='bi bi-clock'></i>Reset Password</a></li>
+                                <li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalResetPassword' onclick=confirmResetPassword(".$field->id.") class='dropdown-item'><i class='bi bi-clock'></i>Reset Password</a></li>
                                 <li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$field->id.",".$field->flag_active.") class='dropdown-item'><i class='bi bi-clock'></i>Deactivate</a></li>
                             ";
                         }else{
@@ -373,6 +373,14 @@ class Member extends BaseController
 
     }
 
+    public function confirmResetPassword(){
+        $id = $this->request->getPost('id');
+        $getData = $this->memberModel->find($id);
+
+        echo json_encode(array('msg'=>$getData['nama_lengkap']));
+
+    }
+
     public function getpaymentDetailUser(){
         // print_r("disini");
         // die;
@@ -470,6 +478,20 @@ class Member extends BaseController
 
 
         $this->getLog($desk);
+    }
+
+    public function resetPassword(){
+        $id = $this->request->getPost('id');
+
+         $url = base_url("email/kirimEmailResetPassword/".$id."");
+        //         print_r($url);
+        // die;
+        $this->sendAsyncRequest($url);
+
+        $desk =  json_encode(array('msg'=>0,'desc'=>"Sukses Reset Password"));
+
+        $this->getLog($desk);
+
     }
 
 

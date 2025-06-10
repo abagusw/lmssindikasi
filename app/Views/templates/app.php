@@ -249,6 +249,28 @@
           </div>
         </div>
       </div>
+
+      <div class="modal fade" id="modalResetPassword" tabindex="-1" aria-labelledby="resetPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content p-3">
+            <div class="modal-header border-0">
+              <h5 class="modal-title fw-bold" id="resetPasswordLabel">Confirm Password Reset</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="bodyModalResetPassword">
+              <p>Are you sure you want to reset this users account?</p><p class='fw-semibold'>An email with password reset instructions will be sent to the user's registered email address.</p>
+              <div class="form-group mt-3">
+                <label class="form-label text-muted" for="userNameResetPassword">Nama</label>
+                <div class="form-control bg-light" id="userNameResetPassword"></div>
+              </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-end">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="btnConfirmResetPassword" class="btn btn-orange text-white">✓ Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!--end::App Main-->
       <!--begin::Footer-->
       <footer class="app-footer">
@@ -428,6 +450,8 @@
       integrity="sha256-XPpPaZlU8S/HWf7FZLAncLg2SAkP8ScUTII89x9D3lY="
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
     <!-- jsvectormap -->
     <script>
       const visitorsData = {

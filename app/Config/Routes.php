@@ -15,6 +15,7 @@ $routes->get('email/testEmail', 'SendEmailCon::testEmail');
 $routes->get('email/templateEmail', 'SendEmailCon::templateEmail');
 $routes->get('email/kirimEmailApprove/(:segment)', 'SendEmailCon::kirimEmailApprove/$1');
 $routes->get('email/kirimEmailReject/(:segment)', 'SendEmailCon::kirimEmailReject/$1');
+$routes->get('email/kirimEmailResetPassword/(:segment)', 'SendEmailCon::kirimEmailResetPassword/$1');
 
 $routes->get('/midtrans/token', 'MidtransController::token');
 $routes->get('/midtrans/checkout', function() {
@@ -56,15 +57,11 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->get('member/templateEmail','Member::templateEmail');
 	$routes->post('member/kirimEmail','Member::kirimEmail');
 	$routes->post('member/confirmStatusData','Member::confirmStatusData');
+	$routes->post('member/confirmResetPassword','Member::confirmResetPassword');
 	$routes->post('member/getpaymentDetailUser','Member::getpaymentDetailUser');
 	$routes->post('member/ubahStatusDataUser','Member::ubahStatusDataUser');
-	
 
-	
-
-
-	
-
+	$routes->post('member/resetPassword','Member::resetPassword');
 
 	//Routes Master //
 	$routes->get('master/branch','Master::branch');
@@ -86,6 +83,17 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	//Routes Payment//
 	$routes->get('payment/index','Payment::index');
 	$routes->post('payment/getPayment','Payment::getPayment');
+
+	//Routes Master Course //
+	$routes->get('master/course','Master::course');
+	$routes->get('master/add_course','Master::add_course');
+	$routes->post('master/getDataCourse','Master::getDataCourse');
+	$routes->post('master/simpanCourse','Master::simpanCourse');
+	$routes->get('master/detail_course/(:segment)','Master::detailCourse/$1');
+
+	
+
+
 
 
 
