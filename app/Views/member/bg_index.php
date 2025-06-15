@@ -137,6 +137,9 @@ $flag = $uri->getSegment(3); ?>
                   <th>Activation Date</th>
                   <th>Last Update</th>
                   <th>Status</th>
+                  <th>Is Setup Password</th>
+                  <th>Is Registered Paid</th>
+                  <th>Is Foundational Course Complete</th>
                   <th>Action</th>
               </tr>
           </thead>

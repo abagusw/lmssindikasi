@@ -160,69 +160,8 @@ $flag = $uri->getSegment(2); ?>
   <!--end::Col-->
 </div>
 
+<?php echo view("member/jsMember"); ?>
 
-<script type="text/javascript">
-    var table;
-    $(document).ready(function() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ambil token dari meta tag
-            }
-        });
-        //datatables
-        table = $('#example').DataTable({ 
-            
-            "processing": true, 
-            "serverSide": true, 
-            "order": [], 
-             
-            "ajax": {
-                "url": "<?php echo base_url('member/getDataMemberReg')?>",
-                "type": "POST",
-                "data": function(d) {
-                    d['<?= csrf_token() ?>'] = '<?= csrf_hash() ?>';
-                },
+<?= $this->renderSection('member/jsMember') ?>
 
-            },
- 
-             
-            "columnDefs": [
-            { 
-                "targets": [ 0 ], 
-                "orderable": false, 
-            },
-            ],
- 
-        });
- 
-    });
-</script>
-
-
-<script>
-      function ubahStatus(flag,id){
-        $.ajax({
-            type: 'POST',
-            data: {flag:flag,id:id},
-            url: "<?php echo base_url('member/ubahStatus')?>",
-            async: false,
-            dataType: 'JSON',
-            success: function(response) {
-              if(response.msg == 0){
-                top.location.href="<?php echo base_url('member/registration')?>";
-
-                $.ambiance({message: "Data sukses disimpan",
-                  type: "success",
-                  fade: false});
-                
-              }else{
-                $.ambiance({message: "Data gagal disimpan",
-                  type: "error",
-                  fade: false});
-              }
-            }
-
-        });
-    }
-</script>
 <?= $this->endSection(); ?>

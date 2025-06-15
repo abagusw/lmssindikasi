@@ -105,7 +105,31 @@ class Member extends BaseController
                                 <li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$field->id.",".$field->flag_active.")  class='dropdown-item'><i class='bi bi-clock'></i>Reactive</a></li>
                             ";
                         }
+
+                        if($field->issetuppassword == 0){
+                            $lblsSetupPass = "";
+                        }else{
+                            $lblsSetupPass = "<i class='bi bi-list-check'></i>";
+                        }
+
+                        if($field->isregisterpaid == 0){
+                            $lblsRegPaid = "";
+                        }else{
+                            $lblsRegPaid = "<i class='bi bi-list-check'></i>";
+                        }
+
+                        if($field->isfoundationalcoursecomplete == 0){
+                            $lblsFoundational = "";
+                        }else{
+                            $lblsFoundational = "<i class='bi bi-list-check'></i>";
+                        }
+
+
+
                         $row[] = $st;
+                        $row[] = $lblsSetupPass;
+                        $row[] = $lblsRegPaid;
+                        $row[] = $lblsFoundational;
                         // $row[] = "<a href=".base_url("member/member_detail/".$field->id."")." class='btn btn-link mb-2'>View</a>
                         // ".$btnResend."";
                         $row[] = "<div class='d-flex gap-2 mb-3'>
@@ -160,8 +184,8 @@ class Member extends BaseController
                         $row[] = $field->create_at;
                         if($field->flag == 0){
                             $st = "<span class='badge rounded-pill text-bg-secondary'>Pending</span>";
-                            $btnAppr = "<a href='#!' onclick='ubahStatus(1,".$field->id.")' class='btn btn-link mb-2'>Approve</a>
-                            <a href='#!' onclick='ubahStatus(2,".$field->id.")' class='btn btn-link mb-2'>Reject</a>";
+                            $btnAppr = "<a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$field->id.",1) class='btn btn-link mb-2'>Approve</a>
+                            <a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$field->id.",2) class='btn btn-link mb-2'>Reject</a>";
                         }elseif($field->flag == 1){
                             $st = "<span class='badge rounded-pill text-bg-success'>Approved</span>";
                             $btnAppr = "";

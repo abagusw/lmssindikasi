@@ -150,8 +150,8 @@ function tanggal_indonesia($tanggal)
         <!--end::Body-->
         <!--begin::Footer-->
         <div class="card-footer">
-          <a class="btn btn-danger" href="#!" onclick="ubahStatus(2,<?php echo $getData['id']; ?>)">Reject</a>
-          <a class="btn btn-primary" onclick="ubahStatus(1,<?php echo $getData['id']; ?>)">Approve</a>
+          <a class="btn btn-danger" href="#!" data-bs-toggle="modal" data-bs-target="#modalStatusData" onclick="confirmStatusData(<?php echo $getData['id']; ?>,2)">Reject</a>
+          <a class="btn btn-primary" href="#!" data-bs-toggle="modal" data-bs-target="#modalStatusData" onclick="confirmStatusData(<?php echo $getData['id']; ?>,1)">Approve</a>
           
         </div> <?php } ?>
         <!--end::Footer-->
@@ -164,30 +164,7 @@ function tanggal_indonesia($tanggal)
 
 
 
-<script>
-      function ubahStatus(flag,id){
-        $.ajax({
-            type: 'POST',
-            data: {flag:flag,id:id},
-            url: "<?php echo base_url('member/ubahStatus')?>",
-            async: false,
-            dataType: 'JSON',
-            success: function(response) {
-              if(response.msg == 0){
-                top.location.href="<?php echo base_url('member/registration')?>";
+<?php echo view("member/jsMember"); ?>
 
-                $.ambiance({message: "Data sukses disimpan",
-                  type: "success",
-                  fade: false});
-                
-              }else{
-                $.ambiance({message: "Data gagal disimpan",
-                  type: "error",
-                  fade: false});
-              }
-            }
-
-        });
-    }
-</script>
+<?= $this->renderSection('member/jsMember') ?>
 <?= $this->endSection(); ?>

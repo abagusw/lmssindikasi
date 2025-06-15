@@ -82,11 +82,30 @@
       <!-- Right Panel: Assign Lesson -->
       <div class="col-lg-4">
         <div class="card shadow-sm h-100">
-          <div class="card-body d-flex flex-column justify-content-center text-center">
-            <h5 class="card-title mb-3">Assign Lesson</h5>
-            <p class="text-muted mb-1">No lesson added</p>
-            <p class="text-muted">Start adding your lesson to be included on a course</p>
-            <button class="btn btn-outline-primary mt-3">+ Add New</button>
+          <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5>Assign Lesson</h5>
+              <a href="#" class="text-danger text-decoration-none">+ Add New</a>
+            </div>
+
+            <!-- Repeat this lesson card as needed -->
+            <div class="lesson-card">
+              <div class="lesson-left">
+                <span class="drag-icon">☰</span>
+                <span class="badge rounded-pill badge-active">Active</span>
+                <span>Pemahaman Tentang Kontrak Kerja dan...</span>
+              </div>
+              <button class="btn btn-sm delete-btn">X</button>
+            </div>
+
+            <div class="lesson-card">
+              <div class="lesson-left">
+                <span class="drag-icon">☰</span>
+                <span class="badge rounded-pill badge-inactive">Inactive</span>
+                <span>Pemahaman Tentang Kontrak Kerja dan...</span>
+              </div>
+              <button class="btn btn-sm delete-btn">X</button>
+            </div>
           </div>
         </div>
       </div>
