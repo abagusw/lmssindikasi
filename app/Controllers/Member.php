@@ -107,19 +107,19 @@ class Member extends BaseController
                         }
 
                         if($field->issetuppassword == 0){
-                            $lblsSetupPass = "";
+                            $lblsSetupPass = "X";
                         }else{
                             $lblsSetupPass = "<i class='bi bi-list-check'></i>";
                         }
 
                         if($field->isregisterpaid == 0){
-                            $lblsRegPaid = "";
+                            $lblsRegPaid = "X";
                         }else{
                             $lblsRegPaid = "<i class='bi bi-list-check'></i>";
                         }
 
                         if($field->isfoundationalcoursecomplete == 0){
-                            $lblsFoundational = "";
+                            $lblsFoundational = "X";
                         }else{
                             $lblsFoundational = "<i class='bi bi-list-check'></i>";
                         }
