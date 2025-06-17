@@ -85,7 +85,7 @@
           <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5>Assign Lesson</h5>
-              <a href="#" class="text-danger text-decoration-none">+ Add New</a>
+              <a href="#!" data-bs-toggle='modal' data-bs-target='#lessonModal' class="text-danger text-decoration-none">+ Add New</a>
             </div>
 
             <!-- Repeat this lesson card as needed -->
@@ -115,6 +115,81 @@
 
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="lessonModal" tabindex="-1" aria-labelledby="lessonModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="lessonModalLabel">Daftar Lesson</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table id="lessonTable" class="table table-hover align-middle table-bordered rounded shadow-sm">
+            <thead class="table-light">
+              <tr>
+                <th><input type="checkbox" id="checkAll"></th>
+                <th>Judul</th>
+                <th>Gambar</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" id="simpanLesson" class="btn btn-success">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    const table = $('#lessonTable').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: {
+        url: '<?= base_url("master/getDatalesson") ?>',
+        type: 'GET'
+      },
+      columns: [
+        { data: 'check', orderable: false, searchable: false },
+        { data: 'title' },
+        { data: 'image', orderable: false, searchable: false },
+        { data: 'status' },
+        { data: 'url', orderable: false, searchable: false }
+      ]
+    });
+
+    $('#checkAll').on('change', function () {
+      $('.lesson-check').prop('checked', this.checked);
+    });
+
+    $('#simpanLesson').on('click', function () {
+        let uuids = [];
+        $('.lesson-check:checked').each(function () {
+          uuids.push($(this).data('uuid'));
+        });
+
+        if (uuids.length === 0) {
+          $.ambiance({message: "Tidak ada data yang dicentang.",
+                  type: "error",
+                  fade: false});
+        } else {
+          let uuidString = uuids.join(',');
+          //console.log('UUID yang dipilih:', uuidString);
+          //alert('UUID yang dipilih (dipisah koma):\n' + uuidString);
+        }
+      });
+  });
+</script>
 <script>
 function click_picture(file) {
    $('#'+file).click();

@@ -258,7 +258,47 @@ class Master extends BaseController
         return view('master/course/bg_index', $data);
     }
 
+    public function getDatalesson()
+    {
+        $client = \Config\Services::curlrequest();
+
+        $ghostApiUrl = 'https://lms.sindikasi.org/ghost/api/content/posts/';
+        $ghostApiKey = '1a0be4d09ea16d73f6cebb1d39';
+
+        $response = $client->get($ghostApiUrl, [
+            'query' => [
+                'key' => $ghostApiKey,
+                'limit' => 100
+            ]
+        ]);
+
+        $body = json_decode($response->getBody(), true);
+        $posts = $body['posts'] ?? [];
+
+        $data = [];
+        $no = 1;
+
+        foreach ($posts as $post) {
+            $data[] = [
+                'check'  => '<input type="checkbox" class="form-check-input lesson-check" data-uuid="' . esc($post['uuid']) . '">',
+                'title'  => '<strong>' . esc($post['title']) . '</strong>',
+                'image'  => $post['feature_image']
+                    ? '<img src="' . esc($post['feature_image']) . '" width="100" height="60" style="border-radius:8px;">'
+                    : '<span class="text-muted fst-italic">Tidak ada</span>',
+                'status' => $post['visibility'] === 'public'
+                    ? '<span class="badge bg-success">Public</span>'
+                    : '<span class="badge bg-secondary">Private</span>',
+                'url'    => '<a href="' . esc($post['url']) . '" target="_blank" class="btn btn-sm btn-outline-primary">🔗 Lihat</a>',
+            ];
+        }
+
+        return $this->response->setJSON([
+            'data' => $data
+        ]);
+    }
+
     public function add_course(){
+        $curl = curl_init();
         $data = [
             'title' => 'Add Master Course',
             'user_logged_in' => $this->userModel->find($this->session->get('id')),

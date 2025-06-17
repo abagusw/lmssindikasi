@@ -15472,5 +15472,65 @@ html.maximized-card {
   background-color: #d8561d;
 }
 
+    .lesson-box {
+      border: 1px dashed #dee2e6;
+      padding: 3rem 1rem;
+      text-align: center;
+      color: #6c757d;
+      border-radius: 0.5rem;
+      background-color: #fff;
+    }
 
+    .lesson-title {
+      font-weight: 600;
+      color: #343a40;
+    }
+
+    .add-new {
+      color: #fd7e14;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .card-header-custom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .lesson-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .lesson-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .drag-icon {
+      cursor: grab;
+      font-size: 1.2rem;
+    }
+    .badge-active {
+      background-color: #e0e7ff;
+      color: #3b82f6;
+    }
+    .badge-inactive {
+      background-color: #f3f4f6;
+      color: #6b7280;
+    }
+    .delete-btn {
+      border: 1px solid #f87171;
+      color: #f87171;
+      background-color: white;
+    }
+    .delete-btn:hover {
+      background-color: #fee2e2;
+    }
 /*# sourceMappingURL=adminlte.css.map */

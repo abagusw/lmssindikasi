@@ -90,6 +90,7 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->post('master/getDataCourse','Master::getDataCourse');
 	$routes->post('master/simpanCourse','Master::simpanCourse');
 	$routes->get('master/detail_course/(:segment)','Master::detailCourse/$1');
+	$routes->get('master/getDatalesson', 'Master::getDatalesson');
 
 	
 
