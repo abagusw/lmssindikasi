@@ -6,6 +6,9 @@ use App\Models\MemberModel;
 use App\Models\MasterBranchModel;
 use App\Models\MasterCityModel;
 use App\Models\MasterCourseModel;
+use App\Models\MasterCourseLesson;
+use App\Models\MasterLesson;
+
 use App\Models\LogModel;
 use App\Libraries\GlobalFunc;
 
@@ -18,6 +21,8 @@ class Master extends BaseController
         $this->masterBranchModel = new MasterBranchModel();
         $this->masterCityModel = new MasterCityModel();
         $this->MasterCourseModel = new MasterCourseModel();
+        $this->masterCourseLesson = new MasterCourseLesson();
+        $this->masterLesson = new MasterLesson();
 
     }
 
@@ -258,12 +263,12 @@ class Master extends BaseController
         return view('master/course/bg_index', $data);
     }
 
-    public function getDatalesson()
+    public function getDatalessonX()
     {
         $client = \Config\Services::curlrequest();
 
-        $ghostApiUrl = 'https://lms.sindikasi.org/ghost/api/content/posts/';
-        $ghostApiKey = '1a0be4d09ea16d73f6cebb1d39';
+        $ghostApiUrl = URLGhost.'/ghost/api/content/posts/';
+        $ghostApiKey = ApiKeyGhost;
 
         $response = $client->get($ghostApiUrl, [
             'query' => [
@@ -297,6 +302,45 @@ class Master extends BaseController
         ]);
     }
 
+    public function getDatalesson()
+    {
+        $posts = $this->masterLesson->findAll();
+        $id = $this->request->getPost('id');
+        $data = [];
+        $no = 1;
+        $db = \Config\Database::connect();
+
+        foreach ($posts as $post) {
+            $exists = $db->table('tb_course_lesson')
+                 ->where('course_id', $id)
+                 ->where('uuid', esc($post['uuid']))
+                 ->countAllResults();
+
+                 if($exists == 0){
+                    $disa = "";
+                 }else{
+                    $disa = "disabled";
+                 }
+
+                $data[] = [
+                    'check'  => '<input type="checkbox" '.$disa.' class="form-check-input lesson-check" data-uuid="' . esc($post['uuid']) . '">',
+                    'title'  => '<strong>' . esc($post['title']) . '</strong>',
+                    'image'  => $post['feature_image']
+                        ? '<img src="' . esc($post['feature_image']) . '" width="100" height="60" style="border-radius:8px;">'
+                        : '<span class="text-muted fst-italic">Tidak ada</span>',
+                    'status' => $post['visibility'] === 'public'
+                        ? '<span class="badge bg-success">Public</span>'
+                        : '<span class="badge bg-secondary">Private</span>',
+                    'url'    => '<a href="' . esc($post['url']) . '" target="_blank" class="btn btn-sm btn-outline-primary">🔗 Lihat</a>',
+                ];
+            
+        }
+
+        return $this->response->setJSON([
+            'data' => $data
+        ]);
+    }
+
     public function add_course(){
         $curl = curl_init();
         $data = [
@@ -312,10 +356,12 @@ class Master extends BaseController
     public function detailCourse(){
         $uri = service('uri');
         $id = $uri->getSegment(3);
+        $getLesson = $this->masterCourseLesson->where('course_id',$id)->findAll();
         $data = [
             'title' => 'Preview Course',
             'user_logged_in' => $this->userModel->find($this->session->get('id')),
             'getData' => $this->MasterCourseModel->find($id),
+            'getLesson' => $getLesson,
             'session' => \Config\Services::session()
         ];
 
@@ -324,6 +370,8 @@ class Master extends BaseController
 
     public function getDataCourse()
     {
+        $db = \Config\Database::connect();
+
     $request = service('request');
     $model = new MasterCourseModel();
 
@@ -380,7 +428,6 @@ class Master extends BaseController
     $total = (new MasterCourseModel())->countAll();
     $filtered = $query->countAllResults(false);
     $data = $query->orderBy($orderColName, $orderDir)->findAll($length, $start);
-
         $results = [];  
         $no = $start;
         foreach ($data as $row) {
@@ -394,17 +441,27 @@ class Master extends BaseController
 
             if($row['status'] == 0){
                 $statusRow = "<span class='badge text-bg-light'>Draft</span>";
+                $btnPubl = "<li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$row['id'].",1) class='dropdown-item'><i class='bi bi-send'></i> Publish</a></li>";
+                $btnWthdr = "";
             }elseif($row['status'] == 1){
                 $statusRow = "<span class='badge text-bg-primary'>Published</span>";
+                $btnPubl = "";
+                $btnWthdr = "<li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$row['id'].",2) class='dropdown-item'><i class='bi bi-stop-circle'></i> Withdraw</a></li>";
             }else{
                 $statusRow = "<span class='badge text-bg-danger'>Withdrawn</span>";
+                $btnPubl = "";
+                $btnWthdr = "";
 
             }
+
+            $exists = $db->table('tb_course_lesson')
+                 ->where('course_id', $row['id'])
+                 ->countAllResults();
             $results[] = [
                 'no' => $no,
                 'judul' => $row['judul'] . '<br><small class="text-muted">' . $row['start_date'] . ' - ' . $row['end_date'] . '</small>',
                 'category' => '<span class="badge bg-dark">' . $kategoriRow . '</span>',
-                'assigned_lesson' => "<a href='#'>1 View</a>",
+                'assigned_lesson' => "<a href='".base_url("master/detail_course_lesson/".$row['id']."")."'>".$exists." View</a>",
                 'participant' => "<a href='#'>0 View</a>",
                 'created_date' => date('d/m/Y', strtotime($row['created_at'])),
                 'status' => $statusRow,
@@ -428,11 +485,15 @@ class Master extends BaseController
                                         <i class='bi bi-three-dots-vertical'></i>
                                       </a>
                                       <ul class='dropdown-menu'>
-                                        <li><a href='".base_url("master/detail_course/".$row['id']."")."' class='dropdown-item'><i class='bi bi-eye'></i> Preview</a></li>
-                                        <li><a href='#!' class='dropdown-item'><i class='bi bi-send'></i> Publish</a></li>
-                                        <li><a href='#!' class='dropdown-item'><i class='bi bi-stop-circle'></i> Withdraw</a></li>
+                                        <li><a href='" . base_url("master/detail_course/" . $row['id']) . "' class='dropdown-item'><i class='bi bi-eye'></i> Preview</a></li>
+                                        $btnPubl
+                                        $btnWthdr
+                                        
                                       </ul>
                                     </div>
+                                    <a href='#!' data-bs-toggle='modal' data-bs-target='#lessonModal' onclick=javascript:confirmAddLesson(".$row['id'].") class='btn btn-outline-secondary btn-hover-outline'>
+                                      <i class='bi bi-book'></i>
+                                    </a>
                                 </div>",
             ];
         }
@@ -506,6 +567,210 @@ class Master extends BaseController
             //     //echo json_encode(array('msg'=>0,'desc'=>"Sukses Insert Data"));
             // }
     }
+
+    public function simpanLessonCourse(){
+        $id = $this->request->getPost('id');
+        $uuidString = $this->request->getPost('uuidString');
+        $uuids = explode(',', $uuidString);
+
+        $db = \Config\Database::connect();
+
+        foreach ($uuids as $uuid) {
+            $uuid = trim($uuid);
+
+            $exists = $db->table('tb_course_lesson')
+                 ->where('course_id', $id)
+                 ->where('uuid', $uuid)
+                 ->countAllResults();
+
+            if ($exists == 0) {
+                $data = [
+                    'course_id' => $id,
+                    'uuid' => $uuid,
+                    'create_user'   => $this->session->get('nama'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+
+                $insert = $db->table('tb_course_lesson')->insert($data);
+            }
+        }
+
+        if($insert){
+            echo json_encode(array('msg'=>0,'desc'=>"Sukses Insert Data"));
+            $desk = $this->session->get('nama')." menambahkan master course";
+            $this->insertLog($desk);
+
+        }
+
+    }
+
+   public function hapusCourseLesson(){
+        $id = $this->request->getPost('id');
+        $getData = $this->masterCourseLesson->find($id);
+        $desk = "Course Lesson ".$getData['uuid']." telah dihapus tanggal : ".date("Y-m-d H:i:s")."";
+
+        $this->masterCourseLesson->delete($id);
+
+        echo json_encode(array('msg'=>0,'desc'=>"Sukses Delete Data Lesson Course"));
+        $this->insertLog($desk);  
+
+
+    }
+
+    public function ubahStatusCourse(){
+        $flag = $this->request->getPost('flag');
+        $id = $this->request->getPost('id');
+
+        if($flag == 1){
+            $dtApr = date('Y-m-d H:i:s');
+            $desk = "".$this->session->get('nama')." sukses publish course tanggal : ".date('Y-m-d H:i:s')."";
+            //$sendEmail->kirimEmailApprove($id);
+        }else{
+            $dtApr = "";
+            $desk = "".$this->session->get('nama')." sukses withdraw course tanggal : ".date('Y-m-d H:i:s')."";
+            //$sendEmail->kirimEmailReject($id);
+        }
+
+        $data = [
+            'status'   => $flag,
+            'update_at'  => $dtApr,
+        ];
+
+        // Lakukan update berdasarkan ID
+        $update = $this->MasterCourseModel->update($id, $data);
+        $jsonResp =  json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
+
+        echo $jsonResp;
+
+    }
+
+    public function lesson(){
+        $data = [
+            'title' => 'Master Lesson',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->masterLesson->orderBy('id', 'DESC')->findAll(),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/lesson/bg_index', $data);
+    }
+
+    public function sinkronLesson()
+    {
+        $db = \Config\Database::connect();
+        $db->table('ms_lesson')->truncate();
+        $masterLesson = new masterLesson();
+        $client = \Config\Services::curlrequest();
+
+        $ghostApiUrl = URLGhost.'/ghost/api/content/posts/';
+        $ghostApiKey = ApiKeyGhost;
+
+        $response = $client->get($ghostApiUrl, [
+            'query' => [
+                'key' => $ghostApiKey,
+                'limit' => 100
+            ]
+        ]);
+
+        $body = json_decode($response->getBody(), true);
+        $posts = $body['posts'] ?? [];
+
+
+        $data = [];
+        $no = 1;
+
+        foreach ($posts as $post) {
+
+            $dataLesson = [
+                'id_ghost'      => $post['id'],
+                'uuid'          => $post['uuid'],
+                'title'         => $post['title'],
+                'slug'          => $post['slug'],
+                'content'       => $post['html'],
+                'feature_image' => $post['feature_image'],
+                'visibility'    => $post['visibility'],
+                'created_at'    => $post['created_at'],
+                'updated_at'    => $post['updated_at'],
+                'published_at'  => $post['published_at'],
+                'url'           => $post['url'],
+                'excerpt'       => $post['excerpt'],
+                'sinkron_date'  => date('Y-m-d H:i:s')
+            ];
+
+            $this->masterLesson->insert($dataLesson);
+
+        }
+
+        return redirect()->to('master/lesson');
+
+    }
+
+    public function getDatalessonByCourse()
+    {
+        $id = $this->request->getPost('id');
+        $data = [];
+        $no = 1;
+        $db = \Config\Database::connect();
+        $builder = $db->table('tb_course_lesson');
+        $builder->select('tb_course_lesson.*, ms_lesson.title, ms_lesson.excerpt'); // sesuaikan kolom
+        $builder->join('ms_lesson', 'tb_course_lesson.uuid = ms_lesson.uuid');
+        $builder->where('course_id',$id);
+        $query = $builder->get();
+        $posts = $query->getResultArray();
+
+        $html = "<table id='lessonTable' class='table table-hover align-middle table-bordered rounded shadow-sm'>
+                  <thead class='table-light'>
+                    <tr>
+                      <th>Judul</th>
+                      <th>Gambar</th>
+                      <th>Status</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  ";
+                  foreach ($posts as $post) {
+                    echo"
+                        <tr>
+                            <td>".esc($post['title'])."</td>
+                            <td>".esc($post['excerpt'])."</td>
+                        </tr>";
+                    }echo"
+                  </tbody>
+                </table>";
+
+
+        return json_encode(array('msg'=>0,'html'=>$html));
+    }
+
+    public function detail_course_lesson(){
+        $uri = service('uri');
+                
+        $id = $uri->getSegment(3);
+
+        $db = \Config\Database::connect();
+        $builder = $db->table('tb_course_lesson');
+        $builder->select('tb_course_lesson.*, ms_lesson.title, ms_lesson.excerpt , ms_lesson.feature_image, ms_lesson.visibility, ms_lesson.url'); // sesuaikan kolom
+        $builder->join('ms_lesson', 'tb_course_lesson.uuid = ms_lesson.uuid');
+        $builder->where('course_id',$id);
+
+        //echo $builder->getCompiledSelect();
+        $query = $builder->get();
+        $posts = $query->getResultArray();
+
+        $data = [
+            'title' => 'Data Lesson By Course',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $posts,
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/course/bg_detail_lesson', $data);
+    }
+
+
+
 
 
 }

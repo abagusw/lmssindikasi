@@ -91,3 +91,5 @@ if (!function_exists('get_base_url')) {
 define('ASSETS_URL',  get_base_url() . 'public/');
 
 define('ASSETS_URL_ADMIN', get_base_url() . 'public/');
+define('URLGhost','https://lms.sindikasi.org');
+define('ApiKeyGhost','1a0be4d09ea16d73f6cebb1d39');

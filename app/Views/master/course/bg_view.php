@@ -74,12 +74,43 @@
       <!-- Right Panel: Assign Lesson -->
       <div class="col-lg-4">
         <div class="card shadow-sm h-100">
-          <div class="card-body d-flex flex-column justify-content-center text-center">
+<!--           <div class="card-body d-flex flex-column justify-content-center text-center">
             <h5 class="card-title mb-3">Assign Lesson</h5>
             <p class="text-muted mb-1">No lesson added</p>
             <p class="text-muted">Start adding your lesson to be included on a course</p>
             <button class="btn btn-outline-primary mt-3">+ Add New</button>
-          </div>
+          </div> -->
+          <?php
+          foreach($getLesson as $gLes){
+            $key = ApiKeyGhost; // Ganti dengan API key kamu
+            $url = URLGhost."/ghost/api/content/posts/?key=$key&filter=uuid:[".$gLes['uuid']."]&limit=1";
+
+            $client = \Config\Services::curlrequest();
+            $response = $client->get($url);
+            $data = json_decode($response->getBody(), true);
+            if (!empty($data['posts'][0])) {
+                $title = $data['posts'][0]['title'];
+               // echo 'Judul: ' . $title;
+            } else {
+               // echo 'Data tidak ditemukan.';
+            }
+
+            if($data['posts'][0]['visibility'] == 'public'){
+              $spVi = '<span class="badge bg-success">Public</span>';
+            }else{
+              $spVi = '<span class="badge bg-secondary">Private</span>';
+            }
+
+            ?>
+            <div class="lesson-card">
+              <div class="lesson-left">
+                <a href=" <?= esc($data['posts'][0]['url']) ?> " target="_blank"><span>☰</span></a>
+                <span class="badge rounded-pill badge-active"><?= $spVi; ?></span>
+                <span><?= $title; ?></span>
+              </div>
+              <a data-bs-toggle="modal" data-bs-target="#deleteModal"  onclick="confirmDeleteCourseLesson(<?= $gLes['id'] ?>)" class="btn btn-sm delete-btn">X</a>
+            </div>
+          <?php } ?>
         </div>
       </div>
     </div>
@@ -87,4 +118,8 @@
 
 
 </div>
+
+<?php echo view("master/course/jsCourse"); ?>
+
+<?= $this->renderSection('master/course/jsCourse') ?>
 <?= $this->endSection(); ?>

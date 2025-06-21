@@ -126,4 +126,7 @@
 	    $(this).val('').change();
 	});
 	</script>
+<?php echo view("master/course/jsCourse"); ?>
+
+<?= $this->renderSection('master/course/jsCourse') ?>
 <?= $this->endSection(); ?>

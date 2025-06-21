@@ -20,7 +20,7 @@
     <!-- Content Layout -->
     <div class="row g-4">
       <!-- Left Panel: Basic Information -->
-      <div class="col-lg-8">
+      <div class="col-lg-12">
         <div class="card shadow-sm">
           <form id="formAddCourse">
             <div class="card-body">
@@ -79,16 +79,14 @@
         </div>
       </div>
 
-      <!-- Right Panel: Assign Lesson -->
-      <div class="col-lg-4">
+
+<!--       <div class="col-lg-4">
         <div class="card shadow-sm h-100">
           <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5>Assign Lesson</h5>
               <a href="#!" data-bs-toggle='modal' data-bs-target='#lessonModal' class="text-danger text-decoration-none">+ Add New</a>
             </div>
-
-            <!-- Repeat this lesson card as needed -->
             <div class="lesson-card">
               <div class="lesson-left">
                 <span class="drag-icon">☰</span>
@@ -108,7 +106,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -117,7 +115,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="lessonModal" tabindex="-1" aria-labelledby="lessonModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="lessonModal" tabindex="-1" aria-labelledby="lessonModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content shadow">
       <div class="modal-header bg-primary text-white">
@@ -147,196 +145,10 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
-<script>
-  $(document).ready(function () {
-    const table = $('#lessonTable').DataTable({
-      processing: true,
-      serverSide: false,
-      ajax: {
-        url: '<?= base_url("master/getDatalesson") ?>',
-        type: 'GET'
-      },
-      columns: [
-        { data: 'check', orderable: false, searchable: false },
-        { data: 'title' },
-        { data: 'image', orderable: false, searchable: false },
-        { data: 'status' },
-        { data: 'url', orderable: false, searchable: false }
-      ]
-    });
+<?php echo view("master/course/jsCourse"); ?>
 
-    $('#checkAll').on('change', function () {
-      $('.lesson-check').prop('checked', this.checked);
-    });
-
-    $('#simpanLesson').on('click', function () {
-        let uuids = [];
-        $('.lesson-check:checked').each(function () {
-          uuids.push($(this).data('uuid'));
-        });
-
-        if (uuids.length === 0) {
-          $.ambiance({message: "Tidak ada data yang dicentang.",
-                  type: "error",
-                  fade: false});
-        } else {
-          let uuidString = uuids.join(',');
-          //console.log('UUID yang dipilih:', uuidString);
-          //alert('UUID yang dipilih (dipisah koma):\n' + uuidString);
-        }
-      });
-  });
-</script>
-<script>
-function click_picture(file) {
-   $('#'+file).click();
-}
-
-function picture_upload_cover(id,image_high,image_tumb){
-
-   var URL     = window.URL || window.webkitURL;
-   var input   = document.querySelector('#'+id);
-   var preview = document.querySelector('#img_'+id);
-   var img     = $(input).val();
-   //alert(preview);
-   $("#rotate_"+id).val('0');
-    $('#img_'+id).animate({  transform: 0}, {
-      step: function(now,rotate) {        
-          $(this).css({
-              '-webkit-transform':'rotate('+now+'deg)', 
-              '-moz-transform':'rotate('+now+'deg)',
-              'transform':'rotate('+now+'deg)'              
-          });
-      }
-      });
-
-    switch(img.substring(img.lastIndexOf('.') + 1).toLowerCase()){
-        case 'jpg': case 'png':
-        var dataURL = "data:image/png,"+encodeURIComponent(window.btoa(input.files[0]) );
-      //  alert(URL.createObjectURL(input.files[0]));
-       var fileURL = URL.createObjectURL(input.files[0]);
-            preview.src = fileURL;
-            //preview.src = dataURL;
-  
-            $('#rem_'+id).show();            
-            $("#gambar_default_cover").val('0');
-            
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var canvas        = document.createElement("canvas");
-                    var ctx           = canvas.getContext("2d");
-
-                    img = new Image();
-                    img.onload=function(){
-                          var MAX_WIDTH = 800;
-                          var MAX_HEIGHT = 800;
-                          var width = img.width;
-                          var height = img.height;
-                  
-                          if (width > height) {
-                            if (width > MAX_WIDTH) {
-                              height *= MAX_WIDTH / width;
-                              width = MAX_WIDTH;
-                            }
-                          } else {
-                            if (height > MAX_HEIGHT) {
-                              width *= MAX_HEIGHT / height;
-                              height = MAX_HEIGHT;
-                            }
-                          }
-                          canvas.width = width;
-                          canvas.height = height;
-                          var ctx = canvas.getContext("2d");
-                          ctx.drawImage(img, 0, 0, width, height);
-                          
-                          image_high.value = canvas.toDataURL('image/png');
-                          
-                    }
-                    img.src = e.target.result;
-                    
-                    img = new Image();
-                    img.onload=function(){
-                          var MAX_WIDTH = 300;
-                          var MAX_HEIGHT = 300;
-                          var width = img.width;
-                          var height = img.height;
-                  
-                          if (width > height) {
-                            if (width > MAX_WIDTH) {
-                              height *= MAX_WIDTH / width;
-                              width = MAX_WIDTH;
-                            }
-                          } else {
-                            if (height > MAX_HEIGHT) {
-                              width *= MAX_HEIGHT / height;
-                              height = MAX_HEIGHT;
-                            }
-                          }
-                          canvas.width = width;
-                          canvas.height = height;
-                          var ctx = canvas.getContext("2d");
-                          ctx.drawImage(img, 0, 0, width, height);
-                          
-                          image_tumb.value = canvas.toDataURL('image/png');
-                    }
-                    img.src = e.target.result;
-                    
-                    input.files[0] = null;
-                    input.value = "";
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-            
-            break;
-        default:
-            $(input).val('');
-            // error message here
-      $.ambiance({message: "Format yang diijinkan .JPG/.PNG",
-              type: "error",
-              fade: false});
-            break;
-    }
-}
-
-function simpanCourse(flag){
-        //var formAddKaryawan = $('#formAddKaryawan').serialize(); 
-        var gambar_default_cover = $('#gambar_default_cover').val();
-        var image_high_cover = $('#image_high_cover').val();
-        var image_tumb_cover = $('#image_tumb_cover').val();
-        var judul = $('#judul').val();
-        var cmbCategory = $('#cmbCategory').val();
-        var deskripsi = $('#deskripsi').val();
-        var topic = $('#topic').val();
-        var start_date = $('#start_date').val();
-        var end_date = $('#end_date').val();
-
-        $.ajax({
-            type: 'POST',
-            data: {flag:flag,gambar_default_cover:gambar_default_cover,judul:judul,cmbCategory:cmbCategory,deskripsi:deskripsi,topic:topic,start_date:start_date,end_date:end_date,image_high_cover:image_high_cover,image_tumb_cover:image_tumb_cover},
-            url: "<?php echo base_url('master/simpanCourse')?>",
-            async: false,
-            dataType: 'JSON',
-            success: function(response) {
-              if(response.msg == 0){
-                top.location.href="<?php echo base_url('master/course')?>";
-
-                $.ambiance({message: "Data sukses disimpan",
-                  type: "success",
-                  fade: false});
-                
-              }else{
-                $.ambiance({message: response.desc,
-                  type: "error",
-                  fade: false});
-              }
-            }
-
-        });
-
-}
-</script>
+<?= $this->renderSection('master/course/jsCourse') ?>
 <?= $this->endSection(); ?>

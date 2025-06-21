@@ -17,7 +17,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url() ?>member/1" class="nav-link">
+                <a href="<?= base_url() ?>master/lesson" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Lesson</p>
                 </a>
@@ -74,7 +74,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url() ?>member/0" class="nav-link">
+                <a href="<?= base_url() ?>" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Lesson Topic</p>
                 </a>

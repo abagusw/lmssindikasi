@@ -272,6 +272,38 @@
         </div>
       </div>
 
+      <div class="modal fade" id="lessonModal" tabindex="-1" aria-labelledby="lessonModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content shadow">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title" id="lessonModalLabel">Daftar Lesson</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+              <div class="table-responsive" id="divLessonTable">
+                <table id="lessonTable" class="table table-hover align-middle table-bordered rounded shadow-sm">
+                  <thead class="table-light">
+                    <tr>
+                      <th><input type="checkbox" id="checkAll"></th>
+                      <th>Judul</th>
+                      <th>Gambar</th>
+                      <th>Status</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="button" id="simpanLesson" class="btn btn-success">Simpan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
 
       <!--end::App Main-->
