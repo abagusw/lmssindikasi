@@ -83,6 +83,8 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	//Routes Payment//
 	$routes->get('payment/index','Payment::index');
 	$routes->post('payment/getPayment','Payment::getPayment');
+	$routes->get('payment/index_call_back','Payment::index_call_back');
+	$routes->post('payment/getPaymentCallBack','Payment::getPaymentCallBack');
 
 	//Routes Master Course //
 	$routes->get('master/course','Master::course');
@@ -105,7 +107,16 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->get('master/getDatalesson', 'Master::getDatalesson');
 	$routes->post('master/getDatalessonByCourse', 'Master::getDatalessonByCourse');
 	$routes->get('master/sinkronLesson','Master::sinkronLesson');
-	$routes->post('master/ubahStatusLesson','Master::ubahStatusLesson');		
+	$routes->post('master/ubahStatusLesson','Master::ubahStatusLesson');	
+
+
+	//Routes Master Course Topic //
+	$routes->get('master/course_topic','Master::course_topic');
+	$routes->get('master/add_course_topic','Master::add_course_topic');
+	$routes->get('master/edit_course_topic/(:segment)','Master::edit_course_topic/$1');
+	$routes->post('master/simpanCourseTopic','Master::simpanCourseTopic');
+	$routes->post('master/simpanEditCourseTopic','Master::simpanEditCourseTopic');
+	$routes->post('master/hapusDataCourseTopic','Master::hapusDataCourseTopic');	
 
 });
 

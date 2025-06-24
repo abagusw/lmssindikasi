@@ -207,6 +207,15 @@ function simpanCourse(flag){
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
 
+        if (!judul || !cmbCategory || !deskripsi || !topic || !start_date || !end_date) {
+            $.ambiance({
+                message: "Harap lengkapi semua field yang wajib diisi!",
+                type: "error",
+                fade: false
+            });
+            return; // hentikan proses
+        }
+
         $.ajax({
             type: 'POST',
             data: {flag:flag,gambar_default_cover:gambar_default_cover,judul:judul,cmbCategory:cmbCategory,deskripsi:deskripsi,topic:topic,start_date:start_date,end_date:end_date,image_high_cover:image_high_cover,image_tumb_cover:image_tumb_cover},

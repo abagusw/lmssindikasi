@@ -9,6 +9,7 @@ use App\Models\LogModel;
 use CodeIgniter\Email\Email;
 use App\Controllers\SendEmailCon;
 use App\Libraries\SendEmail;
+use App\Models\PaymentCallBackModel;;
 
 class Payment extends BaseController
 {
@@ -35,6 +36,17 @@ class Payment extends BaseController
         return view('payment/bg_index', $data);
     }
 
+    public function index_call_back()
+    {
+        $data = [
+            'title' => 'Payment',
+            'user_logged_in' => $this->userModel->find($this->session->get('id'))
+,
+        ];
+
+        return view('payment/bg_index_callback', $data);
+    }
+
     public function getPayment(){
         // print_r("disini");
         // die;
@@ -57,9 +69,10 @@ class Payment extends BaseController
                 }
                 $row[] = $st;
                 $row[] = $field->created_at;
-                $row[] = "<div class='icon-container'><a href='#' class='icon-link'><i class='fa-solid fa-file-lines'></i></a>
-    <a href='#' class='icon-link'><i class='fa-regular fa-file-lines'></i></a>
-    <a href='#' class='icon-link'><i class='fa-solid fa-hand-holding-dollar'></i></a></div>";
+                $row[] = "<div class='icon-container'><!-- <a href='#' class='icon-link'><i class='fa-solid fa-file-lines'></i></a>
+    <a href='#' class='icon-link'><i class='fa-regular fa-file-lines'></i></a>  -->
+    <a href='".base_url("payment/index_call_back")."' class='icon-link'>
+    <i class='fa-solid fa-hand-holding-dollar'></i></a></div>";
                 $data[] = $row;
         }
 
@@ -74,6 +87,42 @@ class Payment extends BaseController
         //output dalam format JSON
         echo json_encode($output);
     }
+
+    public function getPaymentCallBack(){
+        // print_r("disini");
+        // die;
+       //$list = $this->User_model->get_datatables();
+        $paymentModel = new PaymentCallBackModel();
+        $list = $paymentModel->getDatatables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+                $no++;
+                $row = array();
+                $row[] = $field->transaction_status;
+                $row[] = $field->payment_type;
+                $row[] = $field->order_id;
+                $row[] = $field->gross_amount;
+                $row[] = $field->va_number;
+                $row[] = $field->bank;
+                $row[] = $field->url;
+                $row[] = $field->token;
+                $row[] = $field->create_date;
+                $data[] = $row;
+        }
+
+        $output = array(
+                'draw' => intval($this->request->getPost('draw')),
+                'recordsTotal' => $paymentModel->countAll(),
+                'recordsFiltered' => $paymentModel->countFiltered(),
+                "data" => $data,
+        );
+
+       // return $output;
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+    
 
 }
 ?>

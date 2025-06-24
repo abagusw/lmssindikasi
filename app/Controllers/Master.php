@@ -8,6 +8,7 @@ use App\Models\MasterCityModel;
 use App\Models\MasterCourseModel;
 use App\Models\MasterCourseLesson;
 use App\Models\MasterLesson;
+use App\Models\MasterCourseTopic;
 
 use App\Models\LogModel;
 use App\Libraries\GlobalFunc;
@@ -23,6 +24,7 @@ class Master extends BaseController
         $this->MasterCourseModel = new MasterCourseModel();
         $this->masterCourseLesson = new MasterCourseLesson();
         $this->masterLesson = new MasterLesson();
+        $this->masterCourseTopic = new MasterCourseTopic();
 
     }
 
@@ -348,6 +350,7 @@ class Master extends BaseController
             'title' => 'Add Master Course',
             'user_logged_in' => $this->userModel->find($this->session->get('id')),
             'getDataBranch' => $this->MasterCourseModel->orderBy('id', 'DESC')->findAll(),
+            'getDataCouseTopic' => $this->masterCourseTopic->findAll(),
             'session' => \Config\Services::session()
         ];
 
@@ -378,6 +381,7 @@ class Master extends BaseController
             'user_logged_in' => $this->userModel->find($this->session->get('id')),
             'getData' => $this->MasterCourseModel->find($id),
             'getLesson' => $getLesson,
+            'getDataCouseTopic' => $this->masterCourseTopic->findAll(),
             'session' => \Config\Services::session()
         ];
 
@@ -462,7 +466,8 @@ class Master extends BaseController
             }elseif($row['status'] == 1){
                 $statusRow = "<span class='badge text-bg-primary'>Published</span>";
                 $btnPubl = "";
-                $btnWthdr = "<li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$row['id'].",2) class='dropdown-item'><i class='bi bi-stop-circle'></i> Withdraw</a></li>";
+                //$btnWthdr = "<li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$row['id'].",2) class='dropdown-item'><i class='bi bi-stop-circle'></i> Withdraw</a></li>";
+                $btnWthdr = "";
             }else{
                 $statusRow = "<span class='badge text-bg-danger'>Withdrawn</span>";
                 $btnPubl = "";
@@ -759,6 +764,7 @@ class Master extends BaseController
                 'updated_at'    => $post['updated_at'],
                 'published_at'  => $post['published_at'],
                 'url'           => $post['url'],
+                'flag'          => 1,
                 'excerpt'       => $post['excerpt'],
                 'sinkron_date'  => date('Y-m-d H:i:s')
             ];
@@ -767,7 +773,7 @@ class Master extends BaseController
 
         }
 
-        return redirect()->to('master/lesson');
+        //return redirect()->to('master/lesson');
 
     }
 
@@ -873,6 +879,114 @@ class Master extends BaseController
         $jsonResp =  json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
 
         echo $jsonResp;        
+    }
+
+
+    //function master city
+
+    public function course_topic(){
+        $data = [
+            'title' => 'Master Course Topic',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->masterCourseTopic->findAll(),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/course_topic/bg_index', $data);
+    }
+
+    public function add_course_topic(){
+        $data = [
+            'title' => 'Add Master Course Topic',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+
+            'getDataBranch' => $this->masterBranchModel->orderBy('id', 'DESC')->findAll(),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/course_topic/bg_add', $data);     
+    }
+
+    public function edit_course_topic(){
+        $uri = service('uri');
+        $id = $uri->getSegment(3);
+        $data = [
+            'title' => 'Edit Master Course Topic',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->masterCourseTopic->find($id),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/course_topic/bg_edit', $data);        
+    }
+
+    public function simpanCourseTopic(){
+        $nama = $this->request->getPost('nama');
+
+
+        $data = [
+            'name'   => $nama
+        ];
+
+        //         print_r($data);
+        // die;
+
+        $getCourseTopicByName = $this->masterCourseTopic->getCourseTopicByName($nama)->getNumRows();
+
+        if($getCourseTopicByName > 0){
+            $jsonResp = json_encode(array('msg'=>2,'desc'=>"Gagal Duplikasi Data ! Nama sudah ada"));
+        }else{
+
+            $insert = $this->masterCourseTopic->insert($data);
+
+            //if($insert){
+            $jsonResp = json_encode(array('msg'=>0,'desc'=>"Sukses Insert Data"));
+                
+
+            //}
+        }
+        echo $jsonResp;
+        $desk = "Insert data master Course Topic ".json_encode($data)." ".$jsonResp;
+        $this->insertLog($desk);        
+    }
+
+    public function simpanEditCourseTopic(){
+        $id = $this->request->getPost('id');
+        $nama = $this->request->getPost('nama');
+        $cmbBranch = $this->request->getPost('cmbBranch');
+
+        $data = [
+            'name'   => $nama
+        ];
+
+        //$getBranchByNotName = $this->masterBranchModel->getBranchByNotName($nama)->getNumRows();
+
+        //if($getBranchByNotName > 0){
+           // $jsonResp = json_encode(array('msg'=>2,'desc'=>"Gagal Duplikasi Data ! Branch ".$nama." sudah ada"));
+        //}else{
+
+            $update = $this->masterCourseTopic->update($id,$data);
+
+            //if($insert){
+            $jsonResp = json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
+                
+
+            //}
+        //}
+        echo $jsonResp;
+        $desk = "Update data master city ".$jsonResp;
+        $this->insertLog($desk);            
+    }
+
+    public function hapusDataCourseTopic(){
+        $id = $this->request->getPost('id');
+        $getData = $this->masterCourseTopic->find($id);
+        $desk = "Course Topic ".$getData['name']." telah dihapus tanggal : ".date("Y-m-d H:i:s")."";
+
+        $this->masterCourseTopic->delete($id);
+
+        echo json_encode(array('msg'=>0,'desc'=>"Sukses Delete Data Master Course Topic"));
+        $this->insertLog($desk);         
     }
 
 

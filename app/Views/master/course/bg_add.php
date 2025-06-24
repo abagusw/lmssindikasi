@@ -13,7 +13,7 @@
       </div>
       <div>
         <button class="btn btn-outline-secondary me-2" onclick="simpanCourse(0)">Save</button>
-        <button class="btn btn-warning text-white" onclick="simpanCourse(1)">Save & Publish</button>
+        <!-- <button class="btn btn-warning text-white" onclick="simpanCourse(1)">Save & Publish</button> -->
       </div>
     </div>
 
@@ -62,7 +62,14 @@
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label class="form-label">Topic</label>
-                  <input type="text" id="topic" name="topic" class="form-control">
+                  <!-- <input type="text" id="topic" name="topic" class="form-control"> -->
+                  <select id="topic" name="topic" class="form-select">
+                  <option selected disabled>Pilih Topic</option>
+                    <?php foreach($getDataCouseTopic as $topic){
+                    echo"
+                  <option value=".$topic['id'].">".$topic['name']."</option>
+                  ";}?>
+                </select>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="form-label">Start date</label>

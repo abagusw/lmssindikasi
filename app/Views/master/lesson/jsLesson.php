@@ -68,4 +68,27 @@
 
         });
     }
+
+    function confirmSinkronData(){
+      $("#resendActivationLabel").html("Confirm Sinkron Data");
+        $("#btnStatusData").html("Sinkron Data");
+        $("#bodyModalStatusData").html("<p>Apakah Anda yakin ingin menyinkronkan data? Semua lesson yang berstatus Archived akan diubah menjadi Aktif.</p>");
+      $("#btnStatusData").attr('onclick','sinkronData()');
+     
+    }
+    function sinkronData(){
+        $.ajax({
+            type: 'GET',
+            url: "<?php echo base_url('master/sinkronLesson')?>",
+            async: false,
+            success: function(response) {
+                location.reload();
+
+                $.ambiance({message: "Data sukses disinkron",
+                  type: "success",
+                  fade: false});
+            }
+
+        });
+    }
 </script>

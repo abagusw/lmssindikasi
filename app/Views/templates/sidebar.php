@@ -35,12 +35,12 @@
                   <p>Payment List</p>
                 </a>
               </li>
-              <li class="nav-item">
+<!--               <li class="nav-item">
                 <a href="<?= base_url() ?>member/1" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Payment Setting</p>
                 </a>
-              </li>
+              </li> -->
               <li class="nav-header">MEMBERSHIP</li>
               <li class="nav-item">
                 <a href="<?= base_url() ?>member/registration" class="nav-link">
@@ -68,12 +68,12 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#!" class="nav-link">
+                <a href="<?= base_url() ?>master/course_topic" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Course Topic</p>
                 </a>
               </li>
-              <li class="nav-item">
+<!--               <li class="nav-item">
                 <a href="<?= base_url() ?>" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Lesson Topic</p>
@@ -93,7 +93,7 @@
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Announcement</p>
                 </a>
-              </li>
+              </li> -->
 
               <!-- <li class="nav-item menu-open">
                 <a href="#" class="nav-link active">
