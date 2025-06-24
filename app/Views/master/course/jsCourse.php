@@ -232,6 +232,45 @@ function simpanCourse(flag){
 
 }
 
+function simpanCourseEdit(id){
+        //var formAddKaryawan = $('#formAddKaryawan').serialize(); 
+        var gambar_default_cover = $('#gambar_default_cover').val();
+        var image_high_cover = $('#image_high_cover').val();
+        var image_tumb_cover = $('#image_tumb_cover').val();
+        var judul = $('#judul').val();
+        var cmbCategory = $('#cmbCategory').val();
+        var deskripsi = $('#deskripsi').val();
+        var topic = $('#topic').val();
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+
+        $.ajax({
+            type: 'POST',
+            data: {id:id,gambar_default_cover:gambar_default_cover,judul:judul,cmbCategory:cmbCategory,deskripsi:deskripsi,topic:topic,start_date:start_date,end_date:end_date,image_high_cover:image_high_cover,image_tumb_cover:image_tumb_cover},
+            url: "<?php echo base_url('master/simpanCourseEdit')?>",
+            async: false,
+            dataType: 'JSON',
+            success: function(response) {
+              if(response.msg == 0){
+                top.location.href="<?php echo base_url('master/course')?>";
+
+                $.ambiance({message: "Data sukses disimpan",
+                  type: "success",
+                  fade: false});
+                
+              }else{
+                $.ambiance({message: response.desc,
+                  type: "error",
+                  fade: false});
+              }
+            }
+
+        });
+
+}
+
+
+
 
   function confirmDeleteCourseLesson(id){
       $('#btnDelete').attr('onclick', 'hapusCourseLesson('+id+')');

@@ -89,10 +89,14 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->get('master/add_course','Master::add_course');
 	$routes->post('master/getDataCourse','Master::getDataCourse');
 	$routes->post('master/simpanCourse','Master::simpanCourse');
+	$routes->post('master/simpanCourseEdit','Master::simpanCourseEdit');
 	$routes->get('master/detail_course/(:segment)','Master::detailCourse/$1');
+	$routes->get('master/edit_course/(:segment)','Master::editCourse/$1');
 	$routes->post('master/simpanLessonCourse','Master::simpanLessonCourse');
 	$routes->post('master/hapusCourseLesson','Master::hapusCourseLesson');
 	$routes->post('master/ubahStatusCourse','Master::ubahStatusCourse');
+	$routes->get('master/detail_course_lesson/(:segment)','Master::detail_course_lesson/$1');
+	$routes->get('master/detail_course_participant/(:segment)','Master::detail_course_participant/$1');
 
 
 
@@ -101,11 +105,7 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->get('master/getDatalesson', 'Master::getDatalesson');
 	$routes->post('master/getDatalessonByCourse', 'Master::getDatalessonByCourse');
 	$routes->get('master/sinkronLesson','Master::sinkronLesson');
-	$routes->get('master/detail_course_lesson/(:segment)','Master::detail_course_lesson/$1');
-
-
-
-		
+	$routes->post('master/ubahStatusLesson','Master::ubahStatusLesson');		
 
 });
 

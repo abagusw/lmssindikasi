@@ -304,26 +304,26 @@ class Master extends BaseController
 
     public function getDatalesson()
     {
-        $posts = $this->masterLesson->findAll();
-        $id = $this->request->getPost('id');
+        $posts = $this->masterLesson->where('flag',1)->findAll();
+        $id = $this->request->getGet('id');
         $data = [];
         $no = 1;
         $db = \Config\Database::connect();
 
         foreach ($posts as $post) {
-            $exists = $db->table('tb_course_lesson')
-                 ->where('course_id', $id)
-                 ->where('uuid', esc($post['uuid']))
-                 ->countAllResults();
+                $builder = $db->table('tb_course_lesson')
+                  ->where('course_id', $id)
+                  ->where('uuid', $post['uuid']);
 
-                 if($exists == 0){
-                    $disa = "";
-                 }else{
-                    $disa = "disabled";
-                 }
+                    //echo "<pre>" . $builder->getCompiledSelect() . "</pre>";
+                $exists = $builder->countAllResults();
+                 //->countAllResults();
+            
+            if($exists == 0){
+
 
                 $data[] = [
-                    'check'  => '<input type="checkbox" '.$disa.' class="form-check-input lesson-check" data-uuid="' . esc($post['uuid']) . '">',
+                    'check'  => '<input type="checkbox" class="form-check-input lesson-check" data-uuid="' . esc($post['uuid']) . '">',
                     'title'  => '<strong>' . esc($post['title']) . '</strong>',
                     'image'  => $post['feature_image']
                         ? '<img src="' . esc($post['feature_image']) . '" width="100" height="60" style="border-radius:8px;">'
@@ -333,6 +333,7 @@ class Master extends BaseController
                         : '<span class="badge bg-secondary">Private</span>',
                     'url'    => '<a href="' . esc($post['url']) . '" target="_blank" class="btn btn-sm btn-outline-primary">🔗 Lihat</a>',
                 ];
+            }
             
         }
 
@@ -366,6 +367,21 @@ class Master extends BaseController
         ];
 
         return view('master/course/bg_view', $data);         
+    }
+
+    public function editCourse(){
+        $uri = service('uri');
+        $id = $uri->getSegment(3);
+        $getLesson = $this->masterCourseLesson->where('course_id',$id)->findAll();
+        $data = [
+            'title' => 'Preview Course',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->MasterCourseModel->find($id),
+            'getLesson' => $getLesson,
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/course/bg_edit', $data);         
     }
 
     public function getDataCourse()
@@ -457,12 +473,16 @@ class Master extends BaseController
             $exists = $db->table('tb_course_lesson')
                  ->where('course_id', $row['id'])
                  ->countAllResults();
+
+            $totalPart = $db->table('tb_course_participant')
+                 ->where('course_id', $row['id'])
+                 ->countAllResults();
             $results[] = [
                 'no' => $no,
                 'judul' => $row['judul'] . '<br><small class="text-muted">' . $row['start_date'] . ' - ' . $row['end_date'] . '</small>',
                 'category' => '<span class="badge bg-dark">' . $kategoriRow . '</span>',
                 'assigned_lesson' => "<a href='".base_url("master/detail_course_lesson/".$row['id']."")."'>".$exists." View</a>",
-                'participant' => "<a href='#'>0 View</a>",
+                'participant' => "<a href='".base_url("master/detail_course_participant/".$row['id']."")."'>". $totalPart." View</a>",
                 'created_date' => date('d/m/Y', strtotime($row['created_at'])),
                 'status' => $statusRow,
                 // 'action' => '<button class="btn btn-sm btn-outline-primary">✏️</button> <div class="dropdown">
@@ -550,6 +570,50 @@ class Master extends BaseController
              $this->insertLog($jsonResp);
         }
 
+    }
+
+    public function simpanCourseEdit(){
+        $id = $this->request->getPost('id');
+        $path = 'uploads/course/';
+        $gambar_default_cover = $this->request->getPost('gambar_default_cover');
+        $judul = $this->request->getPost('judul');
+        $cmbCategory = $this->request->getPost('cmbCategory');
+        $deskripsi = $this->request->getPost('deskripsi');
+        $topic = $this->request->getPost('topic');
+        $start_date = $this->request->getPost('start_date');
+        $end_date = $this->request->getPost('end_date');
+        $image_high_cover = $this->request->getPost('image_high_cover');
+        $image_tumb_cover = $this->request->getPost('image_tumb_cover');
+
+        $GlobalFunc = new GlobalFunc();
+        if($gambar_default_cover == 0){
+            $gambar_cover = $GlobalFunc->upload_picture_not_resize($path,$image_high_cover,$image_tumb_cover);
+            $link_cover = "uploads/course/".$gambar_cover;
+        }else{
+            $gambar_cover = "";
+            $link_cover = "";
+        }
+        $dataCourse = [
+                'cover'         => $gambar_cover,
+                'judul'         => $judul,
+                'kategori'      => $cmbCategory, 
+                'deskripsi'     => $deskripsi,
+                'start_date'    => $start_date,
+                'end_date'      => $end_date,
+                'topic'         => $topic,
+                'created_at'    => date('Y-m-d H:i:s'),
+                'create_user'   => $this->session->get('nama'),
+                'updated_at'    => date('Y-m-d H:i:s')
+
+        ];
+
+        $update = $this->MasterCourseModel->update($id,$dataCourse);
+
+        if($update){
+             $jsonResp = json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
+             echo $jsonResp;
+             $this->insertLog($jsonResp);
+        }        
     }
 
 
@@ -767,6 +831,47 @@ class Master extends BaseController
         ];
 
         return view('master/course/bg_detail_lesson', $data);
+    }
+
+    public function detail_course_participant(){
+        $uri = service('uri');
+                
+        $id = $uri->getSegment(3);
+        $posts = $this->MasterCourseModel->getCourseParticipantByCourseId($id);
+
+        $data = [
+            'title' => 'Data Participant By Course',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $posts,
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/course/bg_detail_participant', $data);
+    }
+
+    public function ubahStatusLesson(){
+        $flag = $this->request->getPost('flag');
+        $id = $this->request->getPost('id');
+
+        if($flag == 1){
+            $dtApr = date('Y-m-d H:i:s');
+            $desk = "".$this->session->get('nama')." sukses activated lesson tanggal : ".date('Y-m-d H:i:s')."";
+            //$sendEmail->kirimEmailApprove($id);
+        }else{
+            $dtApr = "";
+            $desk = "".$this->session->get('nama')." sukses archived lesson tanggal : ".date('Y-m-d H:i:s')."";
+            //$sendEmail->kirimEmailReject($id);
+        }
+
+        $data = [
+            'flag'   => $flag,
+        ];
+
+        // Lakukan update berdasarkan ID
+        $update = $this->masterLesson->update($id, $data);
+        $jsonResp =  json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
+
+        echo $jsonResp;        
     }
 
 

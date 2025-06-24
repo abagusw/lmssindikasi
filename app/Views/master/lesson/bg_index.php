@@ -40,16 +40,42 @@ $flag = $uri->getSegment(2); ?>
                   }else{
                     $vis = "<span class='badge bg-secondary'>Private</span>";
                   }
+
+                  if($data['flag'] == 0){
+                    $flS = "<span class='badge bg-secondary'>Archived</span>";
+                  }else{
+                    $flS = "<span class='badge bg-success'>Active</span>";
+                  }
+
                   echo"
                   <tr>
                     <td>$no</td>
                     <td>".$data['title']."</td>
                     <td>".$image."</td>
-                    <td>".$vis."</td>
+                    <td>".$flS."</td>
                     <td>".$data['created_at']."</td>
                     <td>".$data['updated_at']."</td>
                     <td>".$data['published_at']."</td>
-                    <td><a href=" . esc($data['url']) . " target='_blank' class='btn btn-sm btn-outline-primary'>🔗 Lihat</a></td>
+                    <td>
+                      <div class='d-flex gap-2'>
+                        <a href=" . esc($data['url']) . " target='_blank' class='btn btn-sm btn-outline-primary'>🔗 Lihat</a>
+                        ";
+                      if($data['flag'] == 0){
+                        echo"
+                      <a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$data['id'].",1) class='btn btn-success btn-sm'>
+                        <i class='bi bi-check-circle'></i> Activated
+                      </a>";
+                      }
+
+                      if($data['flag'] == 1){
+                        echo"
+                      <a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$data['id'].",0) class='btn btn-secondary btn-sm'>
+                        <i class='bi bi-archive'></i> Archived
+                      </a>";}
+                      echo"
+                    </div>
+
+                    </td>
                   </tr>
                   ";
                 }
@@ -60,37 +86,7 @@ $flag = $uri->getSegment(2); ?>
   </div>
   <!--end::Col-->
 </div>
-<script>
-  function confirmDeleteCity(id){
-      $('#btnDelete').attr('onclick', 'hapusDataCity('+id+')');
-  }
+<?php echo view("master/lesson/jsLesson"); ?>
 
-  function hapusDataCity(id){
-    //alert(id);
-        $.ajax({
-            type: 'POST',
-            data:  {id:id},
-            url: "<?php echo base_url('master/hapusDataCity')?>",
-            dataType: 'JSON',
-            success: function(response) {
-              if(response.msg == 0){
-                top.location.href="<?php echo base_url('master/city')?>";
-                $.ambiance({message: "Data sukses dihapus",
-                  type: "success",
-                  fade: false});
-                
-              }else if(response.msg == 2){
-                $.ambiance({message: response.desc,
-                  type: "error",
-                  fade: false});
-              }else{
-                $.ambiance({message: "Another Error !",
-                  type: "error",
-                  fade: false});
-              }
-            }
-
-        });
-  }
-</script>
+<?= $this->renderSection('master/lesson/jsLesson') ?>
 <?= $this->endSection(); ?>

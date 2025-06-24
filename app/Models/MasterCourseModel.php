@@ -20,6 +20,15 @@ class MasterCourseModel extends Model
         $this->db = \Config\Database::connect(); // hanya dipanggil satu kali
     }
 
+    public function getCourseParticipantByCourseId($courseId)
+    {
+        return $this->db->table('tb_course_participant tcp')
+            ->select('tcp.*, tm.*')
+            ->join('tb_member tm', 'tm.id = tcp.user_id')
+            ->get()
+            ->getResultArray();
+    }
+
 
     // public function getCourseByName($name){
     // 	$builder = $this->db->table('tb_course');
