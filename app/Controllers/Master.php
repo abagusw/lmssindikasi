@@ -495,13 +495,17 @@ class Master extends BaseController
                 //                     </div>',
 
                 'action'  => "<div class='d-flex gap-2 mb-3'>
-                                    <a href='".base_url("master/edit_course/".$row['id']."")."' class='btn btn-outline-secondary btn-hover-outline'>
+                                    <a title='Edit Course' href='".base_url("master/edit_course/".$row['id']."")."' class='btn btn-outline-secondary btn-hover-outline'>
                                       <i class='bi bi-pencil'></i>
+                                    </a>
+
+                                    <a title='Assign Lesson' href='#!' data-bs-toggle='modal' data-bs-target='#lessonModal' onclick=javascript:confirmAddLesson(".$row['id'].") class='btn btn-outline-secondary btn-hover-outline'>
+                                      <i class='bi bi-book'></i>
                                     </a>
 
                                     <!-- Dropdown tombol titik tiga -->
                                     <div class='dropdown'>
-                                      <a class='btn btn-outline-secondary btn-hover-outline' data-bs-toggle='dropdown' aria-expanded='false'>
+                                      <a title='Others Action' class='btn btn-outline-secondary btn-hover-outline' data-bs-toggle='dropdown' aria-expanded='false'>
                                         <i class='bi bi-three-dots-vertical'></i>
                                       </a>
                                       <ul class='dropdown-menu'>
@@ -511,9 +515,6 @@ class Master extends BaseController
                                         
                                       </ul>
                                     </div>
-                                    <a href='#!' data-bs-toggle='modal' data-bs-target='#lessonModal' onclick=javascript:confirmAddLesson(".$row['id'].") class='btn btn-outline-secondary btn-hover-outline'>
-                                      <i class='bi bi-book'></i>
-                                    </a>
                                 </div>",
             ];
         }
