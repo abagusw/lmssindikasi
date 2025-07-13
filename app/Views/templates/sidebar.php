@@ -73,6 +73,18 @@
                   <p>Course Topic</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="<?= base_url() ?>master/subsektor" class="nav-link">
+                  <i class="nav-icon bi bi-circle-fill"></i>
+                  <p>Subsektor</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url() ?>master/jabatan" class="nav-link">
+                  <i class="nav-icon bi bi-circle-fill"></i>
+                  <p>Jabatan</p>
+                </a>
+              </li>
 <!--               <li class="nav-item">
                 <a href="<?= base_url() ?>" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>

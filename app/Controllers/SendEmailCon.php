@@ -6,6 +6,8 @@ use App\Models\UserModel;
 use App\Models\MemberModel;
 use App\Models\LogModel;
 use CodeIgniter\Email\Email;
+use App\Libraries\MyEncrypter;
+
 
 
 class SendEmailCon extends BaseController
@@ -86,14 +88,24 @@ class SendEmailCon extends BaseController
     }
 
     public function kirimEmailApprove(){
-
+        $encrypter = new MyEncrypter();
         $uri = service('uri');
         $id = $uri->getSegment(3);
         $getData = $this->memberModel->find($id);
+
+        $dataGenerate = json_encode([
+            'id' => $getData['id'],
+            'fullname' => $getData['nama_lengkap'],
+            'email'    => $getData['email'],
+            'generateDate' => date('Y-m-d H:i:s'),
+        ]);
+        $ciphertext = $encrypter->encrypt($dataGenerate);   
+
         $data = [
             'title' => 'resend Email',
             'user_logged_in' => $this->userModel->find($this->session->get('id')),
             'getData' => $this->memberModel->find($id),
+            'ciphertext' => $ciphertext,
             'session' => \Config\Services::session()
         ];
         $vw = view('email/bg_approve', $data);

@@ -116,7 +116,24 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->get('master/edit_course_topic/(:segment)','Master::edit_course_topic/$1');
 	$routes->post('master/simpanCourseTopic','Master::simpanCourseTopic');
 	$routes->post('master/simpanEditCourseTopic','Master::simpanEditCourseTopic');
-	$routes->post('master/hapusDataCourseTopic','Master::hapusDataCourseTopic');	
+	$routes->post('master/hapusDataCourseTopic','Master::hapusDataCourseTopic');
+
+
+	//Routes Master Subsektor //
+	$routes->get('master/subsektor','Master::subsektor');
+	$routes->get('master/add_subsektor','Master::add_subsektor');
+	$routes->get('master/edit_subsektor/(:segment)','Master::edit_subsektor/$1');
+	$routes->post('master/simpanSubsektor','Master::simpanSubsektor');
+	$routes->post('master/simpanEditSubsektor','Master::simpanEditSubsektor');
+	$routes->post('master/hapusDataSubsektor','Master::hapusDataSubsektor');	
+
+	//Routes Master Jabatan //
+	$routes->get('master/jabatan','Master::jabatan');
+	$routes->get('master/add_jabatan','Master::add_jabatan');
+	$routes->get('master/edit_jabatan/(:segment)','Master::edit_jabatan/$1');
+	$routes->post('master/simpanJabatan','Master::simpanJabatan');
+	$routes->post('master/simpanEditJabatan','Master::simpanEditJabatan');
+	$routes->post('master/hapusDataJabatan','Master::hapusDataJabatan');
 
 });
 

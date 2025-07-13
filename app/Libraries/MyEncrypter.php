@@ -13,9 +13,15 @@ class MyEncrypter
     {
         $config = new Encryption();
         $config->driver = 'OpenSSL';
-        $config->cipher = 'AES-256-GCM';
+        $config->cipher = 'AES-256-CBC';
+        $key = env('encryption.key');
+        if (str_starts_with($key, 'base64:')) {
+            $key = base64_decode(substr($key, 7));
+        } else {
+            $key = hex2bin($key);
+        }
 
-        $config->key = hex2bin(env('encryption.key'));
+        $config->key = $key;
 
 
         $this->encrypter = Services::encrypter($config, false);

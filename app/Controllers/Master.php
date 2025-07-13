@@ -9,7 +9,8 @@ use App\Models\MasterCourseModel;
 use App\Models\MasterCourseLesson;
 use App\Models\MasterLesson;
 use App\Models\MasterCourseTopic;
-
+use App\Models\MasterSubsektor;
+use App\Models\MasterJabatan;
 use App\Models\LogModel;
 use App\Libraries\GlobalFunc;
 
@@ -25,7 +26,8 @@ class Master extends BaseController
         $this->masterCourseLesson = new MasterCourseLesson();
         $this->masterLesson = new MasterLesson();
         $this->masterCourseTopic = new MasterCourseTopic();
-
+        $this->masterSubsektor = new MasterSubsektor();
+        $this->masterJabatan = new MasterJabatan();
     }
 
     /*function master//
@@ -882,7 +884,7 @@ class Master extends BaseController
     }
 
 
-    //function master city
+    //function master course topic
 
     public function course_topic(){
         $data = [
@@ -986,6 +988,217 @@ class Master extends BaseController
         $this->masterCourseTopic->delete($id);
 
         echo json_encode(array('msg'=>0,'desc'=>"Sukses Delete Data Master Course Topic"));
+        $this->insertLog($desk);         
+    }
+
+
+    //function master subsektor
+
+    public function subsektor(){
+        $data = [
+            'title' => 'Master Subsektor',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->masterSubsektor->findAll(),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/subsektor/bg_index', $data);
+    }
+
+    public function add_subsektor(){
+        $data = [
+            'title' => 'Add Master Subsektor',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/subsektor/bg_add', $data);     
+    }
+
+    public function edit_subsektor(){
+        $uri = service('uri');
+        $id = $uri->getSegment(3);
+        $data = [
+            'title' => 'Edit Master Subsektor',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->masterSubsektor->find($id),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/subsektor/bg_edit', $data);        
+    }
+
+    public function simpanSubsektor(){
+        $nama = $this->request->getPost('nama');
+
+
+        $data = [
+            'name'   => $nama
+        ];
+
+        //         print_r($data);
+        // die;
+
+        $getSubsektorByName = $this->masterSubsektor->getSubsektorByName($nama)->getNumRows();
+
+        if($getSubsektorByName > 0){
+            $jsonResp = json_encode(array('msg'=>2,'desc'=>"Gagal Duplikasi Data ! Nama sudah ada"));
+        }else{
+
+            $insert = $this->masterSubsektor->insert($data);
+
+            //if($insert){
+            $jsonResp = json_encode(array('msg'=>0,'desc'=>"Sukses Insert Data"));
+                
+
+            //}
+        }
+        echo $jsonResp;
+        $desk = "Insert data master Subsektor ".json_encode($data)." ".$jsonResp;
+        $this->insertLog($desk);        
+    }
+
+    public function simpanEditSubsektor(){
+        $id = $this->request->getPost('id');
+        $nama = $this->request->getPost('nama');
+        $cmbBranch = $this->request->getPost('cmbBranch');
+
+        $data = [
+            'name'   => $nama
+        ];
+
+        //$getBranchByNotName = $this->masterBranchModel->getBranchByNotName($nama)->getNumRows();
+
+        //if($getBranchByNotName > 0){
+           // $jsonResp = json_encode(array('msg'=>2,'desc'=>"Gagal Duplikasi Data ! Branch ".$nama." sudah ada"));
+        //}else{
+
+            $update = $this->masterSubsektor->update($id,$data);
+
+            //if($insert){
+            $jsonResp = json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
+                
+
+            //}
+        //}
+        echo $jsonResp;
+        $desk = "Update data Subsektor ".$jsonResp;
+        $this->insertLog($desk);            
+    }
+
+    public function hapusDataSubsektor(){
+        $id = $this->request->getPost('id');
+        $getData = $this->masterSubsektor->find($id);
+        $desk = "Subsektor ".$getData['name']." telah dihapus tanggal : ".date("Y-m-d H:i:s")."";
+
+        $this->masterSubsektor->delete($id);
+
+        echo json_encode(array('msg'=>0,'desc'=>"Sukses Delete Data Master Subsektor"));
+        $this->insertLog($desk);         
+    }
+
+    //function master jabatan
+
+    public function jabatan(){
+        $data = [
+            'title' => 'Master Jabatan',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->masterJabatan->findAll(),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/jabatan/bg_index', $data);
+    }
+
+    public function add_jabatan(){
+        $data = [
+            'title' => 'Add Master Jabatan',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/jabatan/bg_add', $data);     
+    }
+
+    public function edit_jabatan(){
+        $uri = service('uri');
+        $id = $uri->getSegment(3);
+        $data = [
+            'title' => 'Edit Master Jabatan',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->masterJabatan->find($id),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/jabatan/bg_edit', $data);        
+    }
+
+    public function simpanJabatan(){
+        $nama = $this->request->getPost('nama');
+
+
+        $data = [
+            'name'   => $nama
+        ];
+
+        //         print_r($data);
+        // die;
+
+        $getJabatanByName = $this->masterJabatan->getJabatanByName($nama)->getNumRows();
+
+        if($getJabatanByName > 0){
+            $jsonResp = json_encode(array('msg'=>2,'desc'=>"Gagal Duplikasi Data ! Nama sudah ada"));
+        }else{
+
+            $insert = $this->masterJabatan->insert($data);
+
+            //if($insert){
+            $jsonResp = json_encode(array('msg'=>0,'desc'=>"Sukses Insert Data"));
+                
+
+            //}
+        }
+        echo $jsonResp;
+        $desk = "Insert data master Jabatan ".json_encode($data)." ".$jsonResp;
+        $this->insertLog($desk);        
+    }
+
+    public function simpanEditJabatan(){
+        $id = $this->request->getPost('id');
+        $nama = $this->request->getPost('nama');
+        $cmbBranch = $this->request->getPost('cmbBranch');
+
+        $data = [
+            'name'   => $nama
+        ];
+
+        //$getBranchByNotName = $this->masterBranchModel->getBranchByNotName($nama)->getNumRows();
+
+        //if($getBranchByNotName > 0){
+           // $jsonResp = json_encode(array('msg'=>2,'desc'=>"Gagal Duplikasi Data ! Branch ".$nama." sudah ada"));
+        //}else{
+
+            $update = $this->masterJabatan->update($id,$data);
+
+            //if($insert){
+            $jsonResp = json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
+                
+
+            //}
+        //}
+        echo $jsonResp;
+        $desk = "Update data Jabatan ".$jsonResp;
+        $this->insertLog($desk);            
+    }
+
+    public function hapusDataJabatan(){
+        $id = $this->request->getPost('id');
+        $getData = $this->masterJabatan->find($id);
+        $desk = "Jabatan ".$getData['name']." telah dihapus tanggal : ".date("Y-m-d H:i:s")."";
+
+        $this->masterJabatan->delete($id);
+
+        echo json_encode(array('msg'=>0,'desc'=>"Sukses Delete Data Master Jabatan"));
         $this->insertLog($desk);         
     }
 
