@@ -741,6 +741,7 @@ class Master extends BaseController
         $response = $client->get($ghostApiUrl, [
             'query' => [
                 'key' => $ghostApiKey,
+                'filter' => 'tag:press-release',
                 'limit' => 100
             ]
         ]);

@@ -9,6 +9,7 @@ use App\Models\PaymentModel;
 use CodeIgniter\Email\Email;
 use App\Controllers\SendEmailCon;
 use App\Libraries\SendEmail;
+use App\Libraries\MyEncrypter;
 
 class Member extends BaseController
 {
@@ -59,6 +60,7 @@ class Member extends BaseController
     }
 
     public function getDataMember(){
+                $encrypter = new MyEncrypter();
                 $uri = service('uri');
                 $flag = $uri->getSegment(3);
 
@@ -93,8 +95,18 @@ class Member extends BaseController
                             $btnResend = "";
                         }
 
+                $dataGenerate = json_encode([
+                    'id' => $field->id,
+                    'fullname' => $field->nama_lengkap,
+                    'email'    => $field->email,
+                    'generateDate' => date('Y-m-d H:i:s'),
+                ]);
+                $ciphertext = $encrypter->encrypt($dataGenerate); 
+
                         if($field->flag_active == 0){
-                            $drBtn = "<li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$field->id.",".$field->flag_active.") class='dropdown-item'>Resend Activation</a></li>";
+                            $drBtn = "<li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalStatusData' onclick=confirmStatusData(".$field->id.",".$field->flag_active.") class='dropdown-item'>Resend Activation</a>
+                            <input type='hidden' id='setupPasswordLink_".$field->id."' value='".fe."set-password?accountregister=".$ciphertext."'>
+                            <button type='button' onclick=copySetupPasswordLink(".$field->id.") class='dropdown-item'>Copy Member Setup Password Link</button></li>";
                         }elseif($field->flag_active == 1){
                             $drBtn = "<li><a href='".base_url("member/member_user_detail/".$field->id."")."?payment_history=true' class='dropdown-item'><i class='bi bi-clock'></i>Payment History</a></li>
                                 <li><a href='#!' data-bs-toggle='modal' data-bs-target='#modalResetPassword' onclick=confirmResetPassword(".$field->id.") class='dropdown-item'><i class='bi bi-clock'></i>Reset Password</a></li>
@@ -164,6 +176,7 @@ class Member extends BaseController
 
     public function getDataMemberReg(){
                 //$uri = service('uri');
+                $encrypter = new MyEncrypter();
                 $flag = 0;
 
                 // print_r("disini");
@@ -174,6 +187,15 @@ class Member extends BaseController
                 $data = array();
                 $no = $_POST['start'];
                 foreach ($list as $field) {
+
+                // $dataGenerate = json_encode([
+                //     'id' => $field->id,
+                //     'fullname' => $field->nama_lengkap,
+                //     'email'    => $field->email,
+                //     'generateDate' => date('Y-m-d H:i:s'),
+                // ]);
+                // $ciphertext = $encrypter->encrypt($dataGenerate); 
+
                         $no++;
                         $row = array();
                         $row[] = $no;

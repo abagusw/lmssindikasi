@@ -232,6 +232,44 @@ $flag = $uri->getSegment(3); ?>
         });
     }
 
+    function copySetupPasswordLink(id) {
+      var copyText = document.getElementById("setupPasswordLink_"+id);
+      
+		  copyText.readOnly = true;
+      copyText.type = "text"; // Ensure the input is of type text for copying
+      copyText.style.position = "absolute"; // Position it off-screen to avoid UI issues
+      copyText.style.left = "-9999px"; // Move it off-screen
+      if (copyText) {
+        copyText.select();
+        copyText.setSelectionRange(0, copyText.value.length);
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(copyText.value)
+            .then(function() {
+              alert("Link Copied to clipboard successfully");
+            })
+            .catch(function(err) {
+              alert("Failed to copy: " + err);
+            });
+        } else {
+          // Fallback for browsers that do not support navigator.clipboard
+          try {
+            var successful = document.execCommand("copy");
+            if (successful) {
+              alert("Link Copied to clipboard successfully");
+            } else {
+              alert("Failed to copy using execCommand.");
+            }
+          } catch (err) {
+            alert("Failed to copy: " + err);
+          }
+        }
+      } else {
+        alert("Element not found.");
+      }
+    }
+
+
     function confirmStatusData(id,flag){
       if(flag == 0){
         $("#resendActivationLabel").html("Resend Activation");
