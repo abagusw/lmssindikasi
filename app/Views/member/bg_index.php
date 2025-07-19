@@ -188,6 +188,9 @@ $flag = $uri->getSegment(3); ?>
                 "data": function(d) {
                     d['<?= csrf_token() ?>'] = '<?= csrf_hash() ?>';
                 },
+                "error": function(xhr, thrownError) {
+                    console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                }
 
             },
  

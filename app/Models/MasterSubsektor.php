@@ -21,6 +21,15 @@ class MasterSubsektor extends Model
         $this->db = \Config\Database::connect(); // hanya dipanggil satu kali
     }
 
+    public function getSubsektorById($id)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->where('id', $id);
+        $query = $builder->get();
+        $result = $query->getRowArray();
+        return $result ? $result['name'] : null;
+    }
+
 
     public function getSubsektorByName($name){
             $builder = $this->db->table($this->table);

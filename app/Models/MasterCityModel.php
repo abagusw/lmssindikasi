@@ -20,6 +20,15 @@ class MasterCityModel extends Model
         $this->db = \Config\Database::connect(); // hanya dipanggil satu kali
     }
 
+    public function getCityById($id)
+    {
+        $builder = $this->db->table('ms_city');
+        $builder->where('id', $id);
+        $query = $builder->get();
+        $result = $query->getRowArray();
+        return $result ? $result['name'] : null;
+    }
+
 
     public function getCityByNameAndByBranch($name,$branch){
     	$builder = $this->db->table('ms_city');

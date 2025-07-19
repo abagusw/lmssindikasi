@@ -6,10 +6,12 @@ use App\Models\UserModel;
 use App\Models\MemberModel;
 use App\Models\LogModel;
 use App\Models\PaymentModel;
+use App\Models\MasterCityModel;
 use CodeIgniter\Email\Email;
 use App\Controllers\SendEmailCon;
 use App\Libraries\SendEmail;
 use App\Libraries\MyEncrypter;
+use App\Models\MasterSubsektor;
 
 class Member extends BaseController
 {
@@ -68,6 +70,8 @@ class Member extends BaseController
                 // die;
                //$list = $this->User_model->get_datatables();
                 $memberModel = new MemberModel();
+                $cityModel = new MasterCityModel();
+                $subSektor = new MasterSubsektor();
                 $list = $memberModel->getDatatables($flag);
                 $data = array();
                 $no = $_POST['start'];
@@ -77,8 +81,8 @@ class Member extends BaseController
                         $row[] = $no;
                         $row[] = $field->nama_lengkap;
                         $row[] = $field->email;
-                        $row[] = $field->domisili;
-                        $row[] = $field->profesi;
+                        $row[] = $cityModel->getCityById($field->domisili);
+                        $row[] = $subSektor->getSubsektorById($field->profesi);
                         $row[] = $field->approval_date;
                         $row[] = $field->updated_at;
                         if($field->flag_active == 0){
@@ -183,6 +187,8 @@ class Member extends BaseController
                 // die;
                //$list = $this->User_model->get_datatables();
                 $memberModel = new MemberModel();
+                $cityModel = new MasterCityModel();
+                $subSektor = new MasterSubsektor();
                 $list = $memberModel->getDatatables($flag);
                 $data = array();
                 $no = $_POST['start'];
@@ -201,8 +207,8 @@ class Member extends BaseController
                         $row[] = $no;
                         $row[] = $field->nama_lengkap;
                         $row[] = $field->email;
-                        $row[] = $field->domisili;
-                        $row[] = $field->profesi;
+                        $row[] = $cityModel->getCityById($field->domisili);
+                        $row[] = $subSektor->getSubsektorById($field->profesi);
                         $row[] = $field->create_at;
                         if($field->flag == 0){
                             $st = "<span class='badge rounded-pill text-bg-secondary'>Pending</span>";
