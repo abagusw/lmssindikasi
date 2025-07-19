@@ -18,7 +18,7 @@ class Email extends BaseConfig
     /**
      * The mail sending protocol: mail, sendmail, smtp
      */
-    public string $protocol = 'smtp';
+    public string $protocol = 'mail';
 
     /**
      * The server path to Sendmail.
@@ -28,22 +28,22 @@ class Email extends BaseConfig
     /**
      * SMTP Server Hostname
      */
-    public string $SMTPHost = 'mail.scriptmedia.net';
+    public string $SMTPHost = '';
 
     /**
      * SMTP Username
      */
-    public string $SMTPUser = '	adminlms@scriptmedia.net';
+    public string $SMTPUser = '';
 
     /**
      * SMTP Password
      */
-    public string $SMTPPass = 'h;O8#BME$T%3';
+    public string $SMTPPass = '';
 
     /**
      * SMTP Port
      */
-    public int $SMTPPort = 465;
+    public int $SMTPPort = 25;
 
     /**
      * SMTP Timeout (in seconds)
