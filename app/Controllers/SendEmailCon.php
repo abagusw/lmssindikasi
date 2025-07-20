@@ -68,6 +68,9 @@ class SendEmailCon extends BaseController
         $email->setSubject($subject);
         $email->setMessage($view);
         $email->setMailType('html'); // wajib kalau isinya HTML
+        $fromEmail = "adminlms@scriptmedia.net";
+        $fromName = "AdminLMS";
+        $email->setFrom($fromEmail, $fromName);
 
         if ($email->send()) {
             //echo 'Email berhasil dikirim!';
