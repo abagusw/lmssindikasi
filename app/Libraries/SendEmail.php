@@ -21,7 +21,9 @@ class SendEmail
     public function konfigEmail($to,$subject,$view)
     {
         $email = \Config\Services::email();
-
+        $fromEmail = config('Email')->fromEmail;
+        $fromName  = config('Email')->fromName;
+        $email->setFrom($fromEmail, $fromName);
         $email->setTo($to);
         $email->setSubject($subject);
         $email->setMessage($view);

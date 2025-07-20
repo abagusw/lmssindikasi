@@ -30,7 +30,7 @@ class MidtransController extends BaseController
             'snapToken' => \Midtrans\Snap::getSnapToken($param)
         ];
 
-        return view('payment/pay',$data);
+        return view('paymentXXX/pay',$data);
     }
 
     // public function token()

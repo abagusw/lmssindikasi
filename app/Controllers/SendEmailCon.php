@@ -63,14 +63,13 @@ class SendEmailCon extends BaseController
     public function konfigEmail($to,$subject,$view)
     {
         $email = \Config\Services::email();
-
+        $fromEmail = config('Email')->fromEmail;
+        $fromName  = config('Email')->fromName;
+        $email->setFrom($fromEmail, $fromName);
         $email->setTo($to);
         $email->setSubject($subject);
         $email->setMessage($view);
         $email->setMailType('html'); // wajib kalau isinya HTML
-        $fromEmail = "adminlms@scriptmedia.net";
-        $fromName = "AdminLMS";
-        $email->setFrom($fromEmail, $fromName);
 
         if ($email->send()) {
             //echo 'Email berhasil dikirim!';
