@@ -82,11 +82,11 @@
             url: "<?php echo base_url('master/sinkronLesson')?>",
             async: false,
             success: function(response) {
-                location.reload();
+                // location.reload();
 
-                $.ambiance({message: "Data sukses disinkron",
-                  type: "success",
-                  fade: false});
+                // $.ambiance({message: "Data sukses disinkron",
+                //   type: "success",
+                //   fade: false});
             }
 
         });
