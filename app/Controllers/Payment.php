@@ -61,13 +61,13 @@ class Payment extends BaseController
                 $row[] = $field->type;
                 $row[] = $field->user;
                 $row[] = $field->amount;
-                $row[] = $field->method;
                 if($field->status == 0){
                     $st = "<span class='badge rounded-pill text-bg-secondary'>Pending</span>";
                 }else{
                     $st = "<span class='badge rounded-pill text-bg-primary'>Paid</span>";
                 }
                 $row[] = $st;
+                $row[] = $field->method;
                 $row[] = $field->created_at;
                 $row[] = "<div class='icon-container'><!-- <a href='#' class='icon-link'><i class='fa-solid fa-file-lines'></i></a>
     <a href='#' class='icon-link'><i class='fa-regular fa-file-lines'></i></a>  -->
