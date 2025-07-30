@@ -337,6 +337,19 @@ class Master extends BaseController
                         : '<span class="badge bg-secondary">Private</span>',
                     'url'    => '<a href="' . esc($post['url']) . '" target="_blank" class="btn btn-sm btn-outline-primary">🔗 Lihat</a>',
                 ];
+            }else{
+
+                $data[] = [
+                    'check'  => '<input type="checkbox" class="form-check-input lesson-check" data-uuid="' . esc($post['uuid']) . '" checked>',
+                    'title'  => '<strong>' . esc($post['title']) . '</strong>',
+                    'image'  => $post['feature_image']
+                        ? '<img src="' . esc($post['feature_image']) . '" width="100" height="60" style="border-radius:8px;">'
+                        : '<span class="text-muted fst-italic">Tidak ada</span>',
+                    'status' => $post['visibility'] === 'public'
+                        ? '<span class="badge bg-success">Public</span>'
+                        : '<span class="badge bg-secondary">Private</span>',
+                    'url'    => '<a href="' . esc($post['url']) . '" target="_blank" class="btn btn-sm btn-outline-primary">🔗 Lihat</a>',
+                ];
             }
             
         }
@@ -642,39 +655,45 @@ class Master extends BaseController
 
     public function simpanLessonCourse(){
         $id = $this->request->getPost('id');
-        $uuidString = $this->request->getPost('uuidString');
-        $uuids = explode(',', $uuidString);
+        $uuidString = $this->request->getPost('uuidString'); // dari checkbox yg dicentang
+        $newUuids = array_map('trim', explode(',', $uuidString));
 
         $db = \Config\Database::connect();
 
-        foreach ($uuids as $uuid) {
-            $uuid = trim($uuid);
+        // Ambil UUID yang sudah tersimpan di DB sebelumnya
+        $existingUuids = $db->table('tb_course_lesson')
+                            ->select('uuid')
+                            ->where('course_id', $id)
+                            ->get()
+                            ->getResultArray();
 
-            $exists = $db->table('tb_course_lesson')
-                 ->where('course_id', $id)
-                 ->where('uuid', $uuid)
-                 ->countAllResults();
+        $existingUuids = array_column($existingUuids, 'uuid'); // hanya ambil kolom uuid
 
-            if ($exists == 0) {
-                $data = [
-                    'course_id' => $id,
-                    'uuid' => $uuid,
-                    'create_user'   => $this->session->get('nama'),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
-                ];
+        $toInsert = array_diff($newUuids, $existingUuids);
 
-                $insert = $db->table('tb_course_lesson')->insert($data);
-            }
+        $toDelete = array_diff($existingUuids, $newUuids);
+
+        foreach ($toInsert as $uuid) {
+            $data = [
+                'course_id'    => $id,
+                'uuid'         => $uuid,
+                'create_user'  => $this->session->get('nama'),
+                'updated_at'   => date('Y-m-d H:i:s'),
+                'created_at'   => date('Y-m-d H:i:s')
+            ];
+            $db->table('tb_course_lesson')->insert($data);
         }
 
-        if($insert){
-            echo json_encode(array('msg'=>0,'desc'=>"Sukses Insert Data"));
-            $desk = $this->session->get('nama')." menambahkan master course";
-            $this->insertLog($desk);
-
+        if (!empty($toDelete)) {
+            $db->table('tb_course_lesson')
+               ->where('course_id', $id)
+               ->whereIn('uuid', $toDelete)
+               ->delete();
         }
 
+        echo json_encode(['msg' => 0, 'desc' => "Sukses Update Data"]);
+        $desk = $this->session->get('nama') . " mengubah master course";
+        $this->insertLog($desk);
     }
 
    public function hapusCourseLesson(){
@@ -704,14 +723,28 @@ class Master extends BaseController
             //$sendEmail->kirimEmailReject($id);
         }
 
+
+
         $data = [
             'status'   => $flag,
             'update_at'  => $dtApr,
         ];
 
         // Lakukan update berdasarkan ID
-        $update = $this->MasterCourseModel->update($id, $data);
-        $jsonResp =  json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
+        if ($flag != 1){    
+            $update = $this->MasterCourseModel->update($id, $data);
+            $jsonResp =  json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
+        }else{
+            //valikdasi aktifasi lesson
+            $cekCourseLesson = $this->masterCourseLesson->getCourseLessonByCourseId($id)->getNumRows();
+            if($cekCourseLesson > 0){
+                $update = $this->MasterCourseModel->update($id, $data);
+                $jsonResp =  json_encode(array('msg'=>0,'desc'=>"Sukses Update Data"));
+            }else{
+                $jsonResp =  json_encode(array('msg'=>1,'desc'=>"Gagal Update Data ! Lesson masih kosong"));
+            }
+
+        }
 
         echo $jsonResp;
 

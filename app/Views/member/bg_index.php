@@ -130,6 +130,7 @@ $flag = $uri->getSegment(3); ?>
           <thead>
               <tr>
                   <th>#</th>
+                  <th>Nomor Anggota</th>
                   <th>Fullname</th>
                   <th>Email</th>
                   <th>City Domicile</th>

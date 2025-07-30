@@ -40,8 +40,7 @@ class Payment extends BaseController
     {
         $data = [
             'title' => 'Payment',
-            'user_logged_in' => $this->userModel->find($this->session->get('id'))
-,
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
         ];
 
         return view('payment/bg_index_callback', $data);
@@ -62,13 +61,13 @@ class Payment extends BaseController
                 $row[] = $field->user;
                 $row[] = $field->amount;
                 $row[] = $field->method;
-                $row[] = $field->created_at;
                 if($field->status == 0){
                     $st = "<span class='badge rounded-pill text-bg-secondary'>Pending</span>";
                 }else{
                     $st = "<span class='badge rounded-pill text-bg-primary'>Paid</span>";
                 }
                 $row[] = $st;
+                $row[] = $field->created_at;
                 $row[] = "<div class='icon-container'><!-- <a href='#' class='icon-link'><i class='fa-solid fa-file-lines'></i></a>
     <a href='#' class='icon-link'><i class='fa-regular fa-file-lines'></i></a>  -->
     <a href='".base_url("payment/index_call_back")."' class='icon-link'>
@@ -107,7 +106,7 @@ class Payment extends BaseController
                 $row[] = $field->bank;
                 $row[] = $field->url;
                 $row[] = $field->token;
-                $row[] = $field->create_date;
+                $row[] = $field->created_at;
                 $data[] = $row;
         }
 

@@ -79,6 +79,7 @@ class Member extends BaseController
                         $no++;
                         $row = array();
                         $row[] = $no;
+                        $row[] = $field->nomor_anggota;
                         $row[] = $field->nama_lengkap;
                         $row[] = $field->email;
                         $row[] = $cityModel->getCityById($field->domisili);

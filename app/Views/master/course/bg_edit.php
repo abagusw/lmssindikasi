@@ -9,7 +9,14 @@
       <div>
         <a href="<?= base_url()?>master/course" class="text-decoration-none me-2">&larr; Back</a>
         <span class="fw-bold">Edit Course</span>
-        <span class="badge bg-secondary ms-2">Draft</span>
+
+        <?php if($getData['status'] == 0){
+          ?>
+          <span class="badge bg-secondary ms-2">Draft</span>
+        <?php }elseif ($getData['status'] == 1) { ?>
+          <span class="badge bg-primary ms-2">Published</span><?php }else{?>
+         <span class="badge bg-danger ms-2">Withdrawn</span><?php } ?>   
+
       </div>
       <div>
         <button class="btn btn-outline-secondary me-2" onclick="simpanCourseEdit(<?= $getData['id']; ?>)">Save</button>

@@ -21,12 +21,12 @@ class MasterCourseLesson extends Model
     }
 
 
-    // public function getCourseByName($name){
-    // 	$builder = $this->db->table('tb_course');
-    //     $builder->where('name', $name);
-    //     $query = $builder->get();
-    //     return $query;
-    // }
+    public function getCourseLessonByCourseId($course_id){
+    	$builder = $this->db->table('tb_course_lesson');
+        $builder->where('course_id', $course_id);
+        $query = $builder->get();
+        return $query;
+    }
 
     // public function getCourseByNotName($name){
     //     $builder = $this->db->table('tb_course');

@@ -343,7 +343,7 @@ function simpanCourseEdit(id){
                   fade: false});
                 
               }else{
-                $.ambiance({message: "Data gagal disimpan",
+                $.ambiance({message: response.desc,
                   type: "error",
                   fade: false});
               }

@@ -66,8 +66,8 @@
                   <th>User</th>
                   <th>Amount</th>
                   <th>Method</th>
-                  <th>Payment Date</th>
                   <th>Status</th>
+                  <th>Payment Date</th>
                   <th>Action</th>
               </tr>
           </thead>
