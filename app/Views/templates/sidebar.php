@@ -23,7 +23,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url() ?>member/1" class="nav-link">
+                <a href="<?= base_url() ?>master/course_analytic" class="nav-link">
                   <i class="nav-icon bi bi-circle-fill"></i>
                   <p>Analytics</p>
                 </a>

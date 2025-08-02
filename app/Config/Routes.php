@@ -135,5 +135,17 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->post('master/simpanEditJabatan','Master::simpanEditJabatan');
 	$routes->post('master/hapusDataJabatan','Master::hapusDataJabatan');
 
+
+	//Routes Course Analytic//
+	$routes->get('master/course_analytic','Master::course_analytic');
+	$routes->post('master/getCourseAnalytic','Master::getCourseAnalytic');
+	$routes->get('master/course_analytic_participant/(:segment)','Master::course_analytic_participant/$1');
+	$routes->get('master/add_course_analytic','Master::add_course_analytic');
+	$routes->get('master/edit_course_analytic/(:segment)','Master::edit_course_analytic/$1');
+	$routes->post('master/simpanCourseAnalytic','Master::simpanCourseAnalytic');
+	$routes->post('master/simpanEditCourseAnalytic','Master::simpanEditCourseAnalytic');
+	$routes->post('master/hapusDataCourseAnalytic','Master::hapusDataCourseAnalytic');	
+
+
 });
 

@@ -9,6 +9,8 @@ use App\Models\MasterCourseModel;
 use App\Models\MasterCourseLesson;
 use App\Models\MasterLesson;
 use App\Models\MasterCourseTopic;
+use App\Models\MasterCourseAnalytic;
+use App\Models\MasterCourseParticipant;
 use App\Models\MasterSubsektor;
 use App\Models\MasterJabatan;
 use App\Models\LogModel;
@@ -28,6 +30,8 @@ class Master extends BaseController
         $this->masterCourseTopic = new MasterCourseTopic();
         $this->masterSubsektor = new MasterSubsektor();
         $this->masterJabatan = new MasterJabatan();
+        $this->masterCourseAnalytic = new MasterCourseAnalytic();
+        $this->masterCourseParticipant = new MasterCourseParticipant();
     }
 
     /*function master//
@@ -1256,6 +1260,39 @@ class Master extends BaseController
         echo json_encode(array('msg'=>0,'desc'=>"Sukses Delete Data Master Jabatan"));
         $this->insertLog($desk);         
     }
+
+
+        //function master course alaytic
+
+    public function course_analytic(){
+        $data = [
+            'title' => 'Master Course Analytic',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->MasterCourseModel->getDataCourseAnalytic(),
+            'countAllCourse' => $this->MasterCourseModel->countAllCourses(),
+            'countPublishCourse' => $this->MasterCourseModel->countPublishByStatus(1),
+            'countDraftCourse' => $this->MasterCourseModel->countPublishByStatus(0),
+            'countAllParticipant' => $this->masterCourseParticipant->countAllParticipant(),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/course_analytic/bg_index', $data);
+    }
+
+    public function course_analytic_participant(){
+        $uri = service('uri');
+        $courseId = $uri->getSegment(3);
+        $data = [
+            'title' => 'Master Course Analytic',
+            'user_logged_in' => $this->userModel->find($this->session->get('id')),
+            'getData' => $this->masterCourseParticipant->getParticipantWithMember($courseId),
+            'session' => \Config\Services::session()
+        ];
+
+        return view('master/course_analytic/bg_member', $data);
+    }
+
+
 
 
 

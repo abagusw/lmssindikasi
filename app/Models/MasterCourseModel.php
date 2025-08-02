@@ -30,6 +30,27 @@ class MasterCourseModel extends Model
     }
 
 
+    public function getDataCourseAnalytic()
+    {
+        return $this->select('tb_course.*, 
+            (SELECT COUNT(*) FROM tb_course_participant WHERE course_id = tb_course.id) as total_participant,
+            (SELECT COUNT(*) FROM tb_course_analytic WHERE course_id = tb_course.id) as total_analytic
+        ')
+        ->orderBy('created_at', 'DESC')
+        ->findAll();
+    }
+
+
+    public function countAllCourses()
+    {
+        return $this->countAllResults();
+    }
+
+    public function countPublishByStatus($status)
+    {
+        return $this->where('status', $status)->countAllResults();
+    }
+
     // public function getCourseByName($name){
     // 	$builder = $this->db->table('tb_course');
     //     $builder->where('name', $name);
