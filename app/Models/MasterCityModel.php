@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class MasterCityModel extends Model
 {
     protected $table = 'ms_city';
-    protected $allowedFields = ['name','branch_id'];
+    protected $allowedFields = ['name','branch_id','kode'];
     protected $useTimestamps = false;
     protected $order = ['id' => 'DESC'];
 

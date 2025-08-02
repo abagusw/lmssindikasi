@@ -28,6 +28,10 @@
             <label for="exampleInputPassword1" class="form-label">Nama</label>
             <input type="text" class="form-control" id="nama" name="nama" required />
           </div>
+          <div class="mb-3">
+            <label for="kode" class="form-label">Kode</label>
+            <input type="text" class="form-control" id="kode" name="kode" required />
+          </div>
         </div>
         <!--end::Body-->
         <!--begin::Footer-->

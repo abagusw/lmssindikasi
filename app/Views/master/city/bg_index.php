@@ -16,6 +16,7 @@ $flag = $uri->getSegment(2); ?>
                     <th>#</th>
                     <th>Branch</th>
                     <th>Nama</th>
+                    <th>Kode</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -29,6 +30,7 @@ $flag = $uri->getSegment(2); ?>
                     <td>$no</td>
                     <td>".$data['branch_name']."</td>
                     <td>".$data['name']."</td>
+                    <td>".$data['kode']."</td>
                     <td>
                       <div class='d-flex gap-2'>
                         <a href='".base_url("master/edit_city/".$data['id']."")."' class='btn btn-sm btn-primary'>

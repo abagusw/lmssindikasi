@@ -190,11 +190,12 @@ class Master extends BaseController
     public function simpanCity(){
         $nama = $this->request->getPost('nama');
         $cmbBranch = $this->request->getPost('cmbBranch');
-
+        $kode = $this->request->getPost('kode');
 
         $data = [
             'branch_id' => $cmbBranch,
-            'name'   => $nama
+            'name'   => $nama,
+            'kode'   => $kode
         ];
 
         //         print_r($data);
