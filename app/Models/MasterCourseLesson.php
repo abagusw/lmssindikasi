@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class MasterCourseLesson extends Model
 {
     protected $table = 'tb_course_lesson';
-    protected $allowedFields = ['*'];
+    protected $allowedFields = ['course_id','judul','uuid','created_at','create_user','updated_at','sort'];
     protected $useTimestamps = true;
     protected $order = ['id' => 'DESC'];
 

@@ -755,6 +755,22 @@ class Master extends BaseController
 
     }
 
+    public function update_order_course(){
+        $orderData = $this->request->getPost('order');
+
+        if ($orderData) {
+            foreach ($orderData as $item) {
+                $this->masterCourseLesson->update($item['id'], [
+                    'sort' => $item['position']
+                ]);
+            }
+
+            return $this->response->setJSON(['status' => 'success']);
+        }
+
+        return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Data tidak valid']);        
+    }
+
     public function lesson(){
         $data = [
             'title' => 'Master Lesson',

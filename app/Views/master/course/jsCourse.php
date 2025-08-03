@@ -352,3 +352,38 @@ function simpanCourseEdit(id){
         });
     }
 </script>
+
+
+<script>
+$(function() {
+    $('#sortable-lesson').sortable({
+        update: function(event, ui) {
+            let order = [];
+            $('#sortable-lesson .lesson-card').each(function(index) {
+                order.push({
+                    id: $(this).data('id'),
+                    position: index + 1
+                });
+            });
+
+            // Kirim ke backend via AJAX
+            $.ajax({
+                url: '<?= base_url('master/update-order-course') ?>',
+                method: 'POST',
+                data: { order: order },
+                dataType: 'JSON',
+                success: function(response) {
+                  $.ambiance({message: "Urutan sukses disimpan",
+                    type: "success",
+                    fade: false});
+                },
+                error: function() {
+                  $.ambiance({message: "Urutan gagal disimpan",
+                  type: "error",
+                  fade: false});
+                }
+            });
+        }
+    });
+});
+</script>

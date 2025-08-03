@@ -99,6 +99,8 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->post('master/ubahStatusCourse','Master::ubahStatusCourse');
 	$routes->get('master/detail_course_lesson/(:segment)','Master::detail_course_lesson/$1');
 	$routes->get('master/detail_course_participant/(:segment)','Master::detail_course_participant/$1');
+	$routes->post('master/update-order-course', 'Master::update_order_course');
+
 
 
 
