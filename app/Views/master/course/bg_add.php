@@ -50,6 +50,9 @@
                   <option value="0">Foundational</option>
                   <option value="1">Advance Course</option>
                 </select>
+                <small class="form-text text-warning">
+                  Menambah course category <strong>foundational</strong> akan menimpa course foundational yang sedang aktif di web member
+                </small>
               </div>
 
               <!-- Description -->

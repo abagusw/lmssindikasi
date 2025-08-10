@@ -84,7 +84,7 @@ class Member extends BaseController
                         $row[] = $field->email;
                         $row[] = $cityModel->getCityById($field->domisili);
                         $row[] = $subSektor->getSubsektorById($field->profesi);
-                        $row[] = $field->approval_date;
+                        $row[] = $field->activation_date;
                         $row[] = $field->updated_at;
                         if($field->flag_active == 0){
                             $st = "<span class='badge rounded-pill text-bg-secondary'>Pending</span>";

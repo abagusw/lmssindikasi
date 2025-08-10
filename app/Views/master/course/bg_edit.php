@@ -66,6 +66,9 @@
                   <option value="0" <?php if($getData['kategori'] == '0'){echo "selected";}?>>Foundational</option>
                   <option value="1" <?php if($getData['kategori'] == '1'){echo "selected";}?>>Advance Course</option>
                 </select>
+                <small class="form-text text-warning">
+                  Menambah course category <strong>foundational</strong> akan menimpa course foundational yang sedang aktif di web member
+                </small>
               </div>
 
               <!-- Description -->
