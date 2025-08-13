@@ -102,6 +102,100 @@ class MemberModel extends Model
         return $query;
     }
 
+    private function activeCondition($builder)
+    {
+        $builder->groupStart()
+            ->where('flag_active', 1)
+        ->groupEnd();
+    }
+
+    public function totalRegister(): int
+    {
+        return (int)$this->builder()->countAllResults();
+    }
+
+    public function totalActive(): int
+    {
+        $b = $this->builder();
+        $this->activeCondition($b);
+        return (int)$b->countAllResults();
+    }
+
+    public function newRegisterThisMonth(): int
+    {
+        $start = date('Y-m-01 00:00:00');
+        $end   = date('Y-m-t 23:59:59');
+        return (int)$this->builder()
+            ->where('created_at >=', $start)
+            ->where('created_at <=', $end)
+            ->countAllResults();
+    }
+
+    public function topCitiesActive(int $limit = 10): array
+    {
+        $b = $this->builder()
+            ->select('COALESCE(NULLIF(TRIM(c.name), \'\'), \'(Tidak diisi)\') AS label', false)
+            ->select('COUNT(*) AS total', false)
+            ->join('ms_city c', 'c.id = tb_member.domisili', 'left'); // join ke ms_city
+
+        $this->activeCondition($b);
+
+        return $b->groupBy('label')
+            ->orderBy('total', 'DESC')
+            ->limit($limit)
+            ->get()
+            ->getResultArray();
+    }
+
+    public function topProfesiActive(int $limit = 10): array
+    {
+        $b = $this->builder()
+            ->select('COALESCE(NULLIF(TRIM(profesi), \'\'), \'(Tidak diisi)\') AS label')
+            ->select('COUNT(*) AS total', false);
+        $this->activeCondition($b);
+        return $b->groupBy('label')
+            ->orderBy('total', 'DESC')
+            ->limit($limit)
+            ->get()->getResultArray();
+    }
+
+
+    private function monthlyCounts(int $year, string $dateCol, bool $onlyActive = false): array
+    {
+        // Gunakan COALESCE utk aktivasi: activation_date -> approval_date -> created_at
+        $col = $dateCol === 'activation_date'
+            ? "COALESCE(activation_date, approval_date, created_at)"
+            : $dateCol;
+
+        $b = $this->builder()
+            ->select("EXTRACT(MONTH FROM {$col}) AS m", false)
+            ->select('COUNT(*) AS total', false)
+            ->where("EXTRACT(YEAR FROM {$col}) =", $year);
+
+        if ($onlyActive) $this->activeCondition($b);
+
+        // Postgres & MySQL 8 sama2 mendukung EXTRACT
+        $rows = $b->groupBy('m')->orderBy('m')->get()->getResultArray();
+
+        // Normalisasi 12 bulan
+        $data = array_fill(1, 12, 0);
+        foreach ($rows as $r) {
+            $data[(int)$r['m']] = (int)$r['total'];
+        }
+        return $data;
+    }
+
+    public function monthlyRegistration(int $year): array
+    {
+        return $this->monthlyCounts($year, 'created_at', false);
+    }
+
+    public function monthlyActivation(int $year): array
+    {
+        // Aktivasi = member yang aktif berdasarkan activation_date/approval_date/created_at
+        return $this->monthlyCounts($year, 'activation_date', true);
+    }
+
 }
 
 ?>

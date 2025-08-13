@@ -1,414 +1,226 @@
 <?= $this->extend('templates/app'); ?>
 
 <?= $this->section('content'); ?>
-<div class="row">
-  <!--begin::Col-->
-  <div class="col-lg-3 col-6">
-    <!--begin::Small Box Widget 1-->
-    <div class="small-box text-bg-primary">
-      <div class="inner">
-        <h3>150</h3>
-        <p>New Orders</p>
-      </div>
-      <svg
-        class="small-box-icon"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
-        ></path>
-      </svg>
-      <a
-        href="#"
-        class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
-      >
-        More info <i class="bi bi-link-45deg"></i>
-      </a>
-    </div>
-    <!--end::Small Box Widget 1-->
-  </div>
-  <!--end::Col-->
-  <div class="col-lg-3 col-6">
-    <!--begin::Small Box Widget 2-->
-    <div class="small-box text-bg-success">
-      <div class="inner">
-        <h3>53<sup class="fs-5">%</sup></h3>
-        <p>Bounce Rate</p>
-      </div>
-      <svg
-        class="small-box-icon"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"
-        ></path>
-      </svg>
-      <a
-        href="#"
-        class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
-      >
-        More info <i class="bi bi-link-45deg"></i>
-      </a>
-    </div>
-    <!--end::Small Box Widget 2-->
-  </div>
-  <!--end::Col-->
-  <div class="col-lg-3 col-6">
-    <!--begin::Small Box Widget 3-->
-    <div class="small-box text-bg-warning">
-      <div class="inner">
-        <h3>44</h3>
-        <p>User Registrations</p>
-      </div>
-      <svg
-        class="small-box-icon"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z"
-        ></path>
-      </svg>
-      <a
-        href="#"
-        class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"
-      >
-        More info <i class="bi bi-link-45deg"></i>
-      </a>
-    </div>
-    <!--end::Small Box Widget 3-->
-  </div>
-  <!--end::Col-->
-  <div class="col-lg-3 col-6">
-    <!--begin::Small Box Widget 4-->
-    <div class="small-box text-bg-danger">
-      <div class="inner">
-        <h3>65</h3>
-        <p>Unique Visitors</p>
-      </div>
-      <svg
-        class="small-box-icon"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          clip-rule="evenodd"
-          fill-rule="evenodd"
-          d="M2.25 13.5a8.25 8.25 0 018.25-8.25.75.75 0 01.75.75v6.75H18a.75.75 0 01.75.75 8.25 8.25 0 01-16.5 0z"
-        ></path>
-        <path
-          clip-rule="evenodd"
-          fill-rule="evenodd"
-          d="M12.75 3a.75.75 0 01.75-.75 8.25 8.25 0 018.25 8.25.75.75 0 01-.75.75h-7.5a.75.75 0 01-.75-.75V3z"
-        ></path>
-      </svg>
-      <a
-        href="#"
-        class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
-      >
-        More info <i class="bi bi-link-45deg"></i>
-      </a>
-    </div>
-    <!--end::Small Box Widget 4-->
-  </div>
-  <!--end::Col-->
-</div>
-<!--end::Row-->
-<!--begin::Row-->
-<div class="row">
-  <!-- Start col -->
-  <div class="col-lg-7 connectedSortable">
-    <div class="card mb-4">
-      <div class="card-header"><h3 class="card-title">Sales Value</h3></div>
-      <div class="card-body"><div id="revenue-chart"></div></div>
-    </div>
-    <!-- /.card -->
-    <!-- DIRECT CHAT -->
-    <div class="card direct-chat direct-chat-primary mb-4">
-      <div class="card-header">
-        <h3 class="card-title">Direct Chat</h3>
-        <div class="card-tools">
-          <span title="3 New Messages" class="badge text-bg-primary"> 3 </span>
-          <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse">
-            <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
-            <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
-          </button>
-          <button
-            type="button"
-            class="btn btn-tool"
-            title="Contacts"
-            data-lte-toggle="chat-pane"
-          >
-            <i class="bi bi-chat-text-fill"></i>
-          </button>
-          <button type="button" class="btn btn-tool" data-lte-toggle="card-remove">
-            <i class="bi bi-x-lg"></i>
-          </button>
+
+<style>
+/* ===== Scoped styling khusus dashboard ===== */
+.dash{
+  --bg-grad-1:#f8fafc;        /* terang */
+  --bg-grad-2:#eef2ff;
+  --card-grad-1:#ffffff;
+  --card-grad-2:#f8fafc;
+  --card-border:#e5e7eb;
+  --txt-muted:#64748b;         /* slate-500 */
+  --txt-strong:#0f172a;        /* slate-900 */
+  --primary:#6366f1;           /* indigo-500 */
+  --secondary:#06b6d4;         /* cyan-500 */
+  --accent:#22c55e;            /* green-500 */
+  --shadow:0 14px 30px rgba(2,6,23,.08);
+
+  background:
+    radial-gradient(900px 500px at -10% -10%, rgba(99,102,241,.10), transparent 60%),
+    radial-gradient(800px 400px at 110% 0%, rgba(34,197,94,.12), transparent 55%),
+    linear-gradient(180deg, var(--bg-grad-1), var(--bg-grad-2));
+  padding: .25rem 0 1rem;
+  border-radius: 18px;
+}
+
+.dash h5{
+  font-weight: 800; letter-spacing:.3px; color: var(--txt-strong);
+}
+
+/* Card umum */
+.dash .card{
+  border:1px solid var(--card-border);
+  border-radius: 18px;
+  background: linear-gradient(180deg, var(--card-grad-1), var(--card-grad-2));
+  box-shadow: var(--shadow);
+}
+.dash .card:hover{ transform: translateY(-2px); transition: .18s ease; }
+
+/* KPI */
+.dash .card-metric .text-muted{ color: var(--txt-muted) !important; text-transform: uppercase; letter-spacing:.6px }
+.dash .card-metric .fs-2{ 
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip:text; background-clip:text; color: transparent;
+}
+
+/* Top 10 list */
+.dash .label-col{ width:72%; color:#0f172a }
+.dash .value-col{ width:28%; text-align:right; color:#0f172a }
+.dash .mini-bar{ height:10px; border-radius:999px; background:#eef2ff; overflow:hidden; }
+.dash .mini-bar>span{ 
+  display:block; height:100%;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+}
+
+/* Header section registration */
+.dash .fw-semibold{ color:#0f172a }
+
+/* Tweak shadow-sm agar lebih lembut */
+.shadow-sm{ box-shadow: var(--shadow) !important; }
+
+@media (prefers-color-scheme: dark){
+  .dash{
+    --bg-grad-1:#0b1229; --bg-grad-2:#0f172a;
+    --card-grad-1:rgba(255,255,255,.06);
+    --card-grad-2:rgba(255,255,255,.03);
+    --card-border:rgba(255,255,255,.12);
+    --txt-muted:#94a3b8; --txt-strong:#e2e8f0;
+    --shadow:0 18px 40px rgba(2,6,23,.45);
+  }
+  .dash .label-col, .dash .value-col{ color: var(--txt-strong); }
+  .dash .mini-bar{ background: rgba(255,255,255,.12); }
+}
+</style>
+
+<div class="dash">
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card card-metric shadow-sm">
+        <div class="card-body">
+          <div class="text-muted small">Total Register</div>
+          <div class="fs-2 fw-bold"><?= number_format($totalRegister) ?></div>
         </div>
       </div>
-      <!-- /.card-header -->
-      <div class="card-body">
-        <!-- Conversations are loaded here -->
-        <div class="direct-chat-messages">
-          <!-- Message. Default to the start -->
-          <div class="direct-chat-msg">
-            <div class="direct-chat-infos clearfix">
-              <span class="direct-chat-name float-start"> <?= $user_logged_in['nama']; ?> </span>
-              <span class="direct-chat-timestamp float-end"> 23 Jan 2:00 pm </span>
-            </div>
-            <!-- /.direct-chat-infos -->
-            <img
-              class="direct-chat-img"
-              src="<?= base_url() ?>assets/assets/img/user1-128x128.jpg"
-              alt="message user image"
-            />
-            <!-- /.direct-chat-img -->
-            <div class="direct-chat-text">
-              Is this template really for free? That's unbelievable!
-            </div>
-            <!-- /.direct-chat-text -->
-          </div>
-          <!-- /.direct-chat-msg -->
-          <!-- Message to the end -->
-          <div class="direct-chat-msg end">
-            <div class="direct-chat-infos clearfix">
-              <span class="direct-chat-name float-end"> Sarah Bullock </span>
-              <span class="direct-chat-timestamp float-start"> 23 Jan 2:05 pm </span>
-            </div>
-            <!-- /.direct-chat-infos -->
-            <img
-              class="direct-chat-img"
-              src="<?= base_url() ?>assets/assets/img/user3-128x128.jpg"
-              alt="message user image"
-            />
-            <!-- /.direct-chat-img -->
-            <div class="direct-chat-text">You better believe it!</div>
-            <!-- /.direct-chat-text -->
-          </div>
-          <!-- /.direct-chat-msg -->
-          <!-- Message. Default to the start -->
-          <div class="direct-chat-msg">
-            <div class="direct-chat-infos clearfix">
-              <span class="direct-chat-name float-start"> <?= $user_logged_in['nama']; ?> </span>
-              <span class="direct-chat-timestamp float-end"> 23 Jan 5:37 pm </span>
-            </div>
-            <!-- /.direct-chat-infos -->
-            <img
-              class="direct-chat-img"
-              src="../../dist/assets/img/user1-128x128.jpg"
-              alt="message user image"
-            />
-            <!-- /.direct-chat-img -->
-            <div class="direct-chat-text">
-              Working with AdminLTE on a great new app! Wanna join?
-            </div>
-            <!-- /.direct-chat-text -->
-          </div>
-          <!-- /.direct-chat-msg -->
-          <!-- Message to the end -->
-          <div class="direct-chat-msg end">
-            <div class="direct-chat-infos clearfix">
-              <span class="direct-chat-name float-end"> Sarah Bullock </span>
-              <span class="direct-chat-timestamp float-start"> 23 Jan 6:10 pm </span>
-            </div>
-            <!-- /.direct-chat-infos -->
-            <img
-              class="direct-chat-img"
-              src="../../dist/assets/img/user3-128x128.jpg"
-              alt="message user image"
-            />
-            <!-- /.direct-chat-img -->
-            <div class="direct-chat-text">I would love to.</div>
-            <!-- /.direct-chat-text -->
-          </div>
-          <!-- /.direct-chat-msg -->
+    </div>
+    <div class="col-md-4">
+      <div class="card card-metric shadow-sm">
+        <div class="card-body">
+          <div class="text-muted small">Total Active Member</div>
+          <div class="fs-2 fw-bold"><?= number_format($totalActive) ?></div>
         </div>
-        <!-- /.direct-chat-messages-->
-        <!-- Contacts are loaded here -->
-        <div class="direct-chat-contacts">
-          <ul class="contacts-list">
-            <li>
-              <a href="#">
-                <img
-                  class="contacts-list-img"
-                  src="../../dist/assets/img/user1-128x128.jpg"
-                  alt="User Avatar"
-                />
-                <div class="contacts-list-info">
-                  <span class="contacts-list-name">
-                    Count Dracula
-                    <small class="contacts-list-date float-end"> 2/28/2023 </small>
-                  </span>
-                  <span class="contacts-list-msg"> How have you been? I was... </span>
-                </div>
-                <!-- /.contacts-list-info -->
-              </a>
-            </li>
-            <!-- End Contact Item -->
-            <li>
-              <a href="#">
-                <img
-                  class="contacts-list-img"
-                  src="../../dist/assets/img/user7-128x128.jpg"
-                  alt="User Avatar"
-                />
-                <div class="contacts-list-info">
-                  <span class="contacts-list-name">
-                    Sarah Doe
-                    <small class="contacts-list-date float-end"> 2/23/2023 </small>
-                  </span>
-                  <span class="contacts-list-msg"> I will be waiting for... </span>
-                </div>
-                <!-- /.contacts-list-info -->
-              </a>
-            </li>
-            <!-- End Contact Item -->
-            <li>
-              <a href="#">
-                <img
-                  class="contacts-list-img"
-                  src="../../dist/assets/img/user3-128x128.jpg"
-                  alt="User Avatar"
-                />
-                <div class="contacts-list-info">
-                  <span class="contacts-list-name">
-                    Nadia Jolie
-                    <small class="contacts-list-date float-end"> 2/20/2023 </small>
-                  </span>
-                  <span class="contacts-list-msg"> I'll call you back at... </span>
-                </div>
-                <!-- /.contacts-list-info -->
-              </a>
-            </li>
-            <!-- End Contact Item -->
-            <li>
-              <a href="#">
-                <img
-                  class="contacts-list-img"
-                  src="../../dist/assets/img/user5-128x128.jpg"
-                  alt="User Avatar"
-                />
-                <div class="contacts-list-info">
-                  <span class="contacts-list-name">
-                    Nora S. Vans
-                    <small class="contacts-list-date float-end"> 2/10/2023 </small>
-                  </span>
-                  <span class="contacts-list-msg"> Where is your new... </span>
-                </div>
-                <!-- /.contacts-list-info -->
-              </a>
-            </li>
-            <!-- End Contact Item -->
-            <li>
-              <a href="#">
-                <img
-                  class="contacts-list-img"
-                  src="../../dist/assets/img/user6-128x128.jpg"
-                  alt="User Avatar"
-                />
-                <div class="contacts-list-info">
-                  <span class="contacts-list-name">
-                    John K.
-                    <small class="contacts-list-date float-end"> 1/27/2023 </small>
-                  </span>
-                  <span class="contacts-list-msg"> Can I take a look at... </span>
-                </div>
-                <!-- /.contacts-list-info -->
-              </a>
-            </li>
-            <!-- End Contact Item -->
-            <li>
-              <a href="#">
-                <img
-                  class="contacts-list-img"
-                  src="../../dist/assets/img/user8-128x128.jpg"
-                  alt="User Avatar"
-                />
-                <div class="contacts-list-info">
-                  <span class="contacts-list-name">
-                    Kenneth M.
-                    <small class="contacts-list-date float-end"> 1/4/2023 </small>
-                  </span>
-                  <span class="contacts-list-msg"> Never mind I found... </span>
-                </div>
-                <!-- /.contacts-list-info -->
-              </a>
-            </li>
-            <!-- End Contact Item -->
-          </ul>
-          <!-- /.contacts-list -->
-        </div>
-        <!-- /.direct-chat-pane -->
       </div>
-      <!-- /.card-body -->
-      <div class="card-footer">
-        <form action="#" method="post">
-          <div class="input-group">
-            <input
-              type="text"
-              name="message"
-              placeholder="Type Message ..."
-              class="form-control"
-            />
-            <span class="input-group-append">
-              <button type="button" class="btn btn-primary">Send</button>
-            </span>
-          </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-metric shadow-sm">
+        <div class="card-body">
+          <div class="text-muted small">New Register This Month</div>
+          <div class="fs-2 fw-bold"><?= number_format($newRegisterMonth) ?></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-2">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="mb-2 fw-semibold">Top 10 City Active Member</div>
+          <?php foreach ($topCities as $row): ?>
+            <?php
+              $max = max(array_column($topCities,'total')) ?: 1;
+              $pct = round($row['total']*100/$max,2);
+            ?>
+            <div class="d-flex align-items-center mb-2">
+              <div class="label-col small text-truncate me-2"><?= esc($row['label']) ?></div>
+              <div class="value-col small"><?= number_format($row['total']) ?></div>
+            </div>
+            <div class="mini-bar mb-2"><span style="width:<?= $pct ?>%"></span></div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="mb-2 fw-semibold">Top 10 Member Job Title</div>
+          <?php foreach ($topProfesi as $row): ?>
+            <?php
+              $max2 = max(array_column($topProfesi,'total')) ?: 1;
+              $pct2 = round($row['total']*100/$max2,2);
+            ?>
+            <div class="d-flex align-items-center mb-2">
+              <div class="label-col small text-truncate me-2"><?= esc($row['label']) ?></div>
+              <div class="value-col small"><?= number_format($row['total']) ?></div>
+            </div>
+            <div class="mini-bar mb-2"><span style="width:<?= $pct2 ?>%"></span></div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mt-3">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="fw-semibold">Registration</div>
+        <form method="get">
+          <select name="year" class="form-select form-select-sm" onchange="this.form.submit()">
+            <?php $yNow = (int)date('Y'); for($y=$yNow-4;$y<=$yNow;$y++): ?>
+              <option value="<?= $y ?>" <?= $y===$year?'selected':'' ?>><?= $y ?></option>
+            <?php endfor; ?>
+          </select>
         </form>
       </div>
-      <!-- /.card-footer-->
-    </div>
-    <!-- /.direct-chat -->
-  </div>
-  <!-- /.Start col -->
-  <!-- Start col -->
-  <div class="col-lg-5 connectedSortable">
-    <div class="card text-white bg-primary bg-gradient border-primary mb-4">
-      <div class="card-header border-0">
-        <h3 class="card-title">Sales Value</h3>
-        <div class="card-tools">
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            data-lte-toggle="card-collapse"
-          >
-            <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
-            <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
-          </button>
-        </div>
-      </div>
-      <div class="card-body"><div id="world-map" style="height: 220px"></div></div>
-      <div class="card-footer border-0">
-        <!--begin::Row-->
-        <div class="row">
-          <div class="col-4 text-center">
-            <div id="sparkline-1" class="text-dark"></div>
-            <div class="text-white">Visitors</div>
-          </div>
-          <div class="col-4 text-center">
-            <div id="sparkline-2" class="text-dark"></div>
-            <div class="text-white">Online</div>
-          </div>
-          <div class="col-4 text-center">
-            <div id="sparkline-3" class="text-dark"></div>
-            <div class="text-white">Sales</div>
-          </div>
-        </div>
-        <!--end::Row-->
-      </div>
+      <canvas id="regChart" height="110"></canvas>
     </div>
   </div>
-  <!-- /.Start col -->
 </div>
-            <!-- /.row (main row) -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+// gunakan warna dari CSS variables supaya konsisten tema
+const css = getComputedStyle(document.querySelector('.dash'));
+const c1  = css.getPropertyValue('--primary').trim()   || '#6366f1';
+const c2  = css.getPropertyValue('--secondary').trim() || '#06b6d4';
+const grid = 'rgba(100,116,139,.25)';
+
+// gradient fill lembut
+const ctx = document.getElementById('regChart').getContext('2d');
+const grad1 = ctx.createLinearGradient(0,0,0,160); grad1.addColorStop(0, c1); grad1.addColorStop(1, 'rgba(99,102,241,0)');
+const grad2 = ctx.createLinearGradient(0,0,0,160); grad2.addColorStop(0, c2); grad2.addColorStop(1, 'rgba(6,182,212,0)');
+
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: <?= json_encode($monthLabels) ?>,
+    datasets: [
+      {
+        label: 'Register',
+        data: <?= json_encode($seriesRegister) ?>,
+        borderColor: c1,
+        backgroundColor: grad1,
+        fill: true,
+        tension: 0.35,
+        borderWidth: 3,
+        pointRadius: 2.5,
+        pointHoverRadius: 4
+      },
+      {
+        label: 'Active Member',
+        data: <?= json_encode($seriesActive) ?>,
+        borderColor: c2,
+        backgroundColor: grad2,
+        fill: true,
+        tension: 0.35,
+        borderWidth: 3,
+        pointRadius: 2.5,
+        pointHoverRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: { color: '#0f172a' }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(15,23,42,.92)',
+        borderColor: 'rgba(148,163,184,.35)',
+        borderWidth: 1,
+        padding: 10
+      }
+    },
+    scales: {
+      x: { ticks: { color: '#0f172a' }, grid: { color: grid } },
+      y: { beginAtZero: true, ticks: { precision:0, color:'#0f172a' }, grid: { color: grid } }
+    }
+  }
+});
+</script>
+
 <?= $this->endSection(); ?>
