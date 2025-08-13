@@ -69,12 +69,23 @@
     --txt-muted:#94a3b8; --txt-strong:#e2e8f0;
     --shadow:0 18px 40px rgba(2,6,23,.45);
   }
+
+  .dash.force-light{
+    --bg-grad-1:#f8fafc; --bg-grad-2:#eef2ff;
+    --card-grad-1:#ffffff; --card-grad-2:#f8fafc;
+    --card-border:#e5e7eb;
+    --txt-muted:#64748b; --txt-strong:#0f172a;
+    --shadow:0 14px 30px rgba(2,6,23,.08);
+  }
+  .dash.force-light .label-col,
+  .dash.force-light .value-col{ color:#0f172a }
+  .dash.force-light .mini-bar{ background:#eef2ff }
   .dash .label-col, .dash .value-col{ color: var(--txt-strong); }
   .dash .mini-bar{ background: rgba(255,255,255,.12); }
 }
 </style>
 
-<div class="dash">
+<div class="dash force-light">
   <div class="row g-3">
     <div class="col-md-4">
       <div class="card card-metric shadow-sm">
