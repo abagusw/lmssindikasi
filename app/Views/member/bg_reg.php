@@ -123,9 +123,15 @@ $flag = $uri->getSegment(2); ?>
   </div>
 
   <div class="col-lg-12">
+    <button id="btnApproveSelected" class="btn btn-success mb-3" disabled data-bs-toggle="modal" data-bs-target="#modalBulkApprove">
+      Approve Selected
+    </button>
     <table id="example"class="table table-bordered table-striped table-hover align-middle">
           <thead>
               <tr>
+                  <th style="width:36px;">
+                    <input type="checkbox" id="checkAll" />
+                  </th>
                   <th>#</th>
                   <th>Fullname</th>
                   <th>Email</th>
@@ -155,6 +161,29 @@ $flag = $uri->getSegment(2); ?>
     </table>
   </div>
   <!--end::Col-->
+</div>
+
+
+<div class="modal fade" id="modalBulkApprove" tabindex="-1" aria-labelledby="modalBulkApproveLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalBulkApproveLabel">Konfirmasi Approve</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <p>Anda akan menyetujui <span id="approveCount">0</span> data berikut:</p>
+        <ul id="approveNames" class="list-group"></ul>
+        <div class="alert alert-warning mt-3 mb-0">
+          Tindakan ini akan mengubah status menjadi <strong>Approved</strong>.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnConfirmBulkApprove" type="button" class="btn btn-success">Approve</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <?php echo view("member/jsMember"); ?>

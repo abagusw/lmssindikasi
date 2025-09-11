@@ -204,7 +204,13 @@ class Member extends BaseController
                 // $ciphertext = $encrypter->encrypt($dataGenerate); 
 
                         $no++;
+
                         $row = array();
+                        if ((int)$field->flag === 0) {
+                            $row[] = '<input type="checkbox" class="row-check" data-id="'.$field->id.'" data-nama="'.htmlspecialchars($field->nama_lengkap, ENT_QUOTES).'" />';
+                        } else {
+                            $row[] = '<input type="checkbox" class="row-check" disabled />';
+                        }
                         $row[] = $no;
                         $row[] = $field->nama_lengkap;
                         $row[] = $field->email;
@@ -246,7 +252,88 @@ class Member extends BaseController
                // return $output;
                 //output dalam format JSON
                 echo json_encode($output);
-    }        
+    } 
+
+    public function bulkApprove()
+    {
+        // --- Ambil payload ---
+        $payload = $this->request->getJSON(true);
+        if (!is_array($payload) || empty($payload)) {
+            $payload = $this->request->getPost();
+        }
+        if (!is_array($payload) || empty($payload)) {
+            $raw = $this->request->getBody();
+            if ($raw) {
+                $tmp = json_decode($raw, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($tmp)) {
+                    $payload = $tmp;
+                }
+            }
+        }
+
+        $ids = $payload['ids'] ?? null;
+
+        // Validasi & sanitasi ids
+        if (!is_array($ids) || empty($ids)) {
+            return $this->response->setStatusCode(400)
+                ->setJSON(['ok' => false, 'message' => 'No selection']);
+        }
+        $ids = array_values(array_unique(array_map('intval', $ids)));
+        $ids = array_filter($ids, static fn($v) => $v > 0);
+        if (empty($ids)) {
+            return $this->response->setStatusCode(400)
+                ->setJSON(['ok' => false, 'message' => 'No selection']);
+        }
+
+        $db = \Config\Database::connect();
+        $builder = $db->table('tb_member');
+
+        $db->transBegin();
+        try {
+            // Approve hanya yang masih Pending (flag=0)
+            $builder->whereIn('id', $ids)
+                    ->where('flag', 0)
+                    ->update([
+                        'flag'        => 1,
+                        'approval_date' => date('Y-m-d H:i:s'),
+                    ]);
+
+            $updated = $db->affectedRows();
+
+            // Catatan aktivitas
+            $namaUser = session()->get('nama') ?? 'SYSTEM';
+            $dtApr    = date('Y-m-d H:i:s');
+            $idList   = implode(',', $ids);
+            $desk     = "{$namaUser} sukses meng-approve data member ID: {$idList} tanggal: {$dtApr}";
+            // TODO: simpan $desk ke tabel log jika perlu
+
+            // Kirim email satu persatu
+            foreach ($ids as $id) {
+                $url = base_url('email/kirimEmailApprove/' . $id);
+                if (method_exists($this, 'sendAsyncRequest')) {
+                    $this->sendAsyncRequest($url);
+                }
+            }
+
+            $db->transCommit();
+            return $this->response->setJSON([
+                'ok'      => true,
+                'message' => 'Approved',
+                'updated' => $updated,
+                'ids'     => $ids,
+            ]);
+        } catch (\Throwable $e) {
+            $db->transRollback();
+            return $this->response->setStatusCode(500)
+                ->setJSON(['ok' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+
+
+
+
+
 
 
     public function getDataMemberDetail(){

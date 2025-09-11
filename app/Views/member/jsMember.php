@@ -76,3 +76,101 @@
         });
     }
 </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tableEl = document.getElementById('example');
+  const checkAllEl = document.getElementById('checkAll');
+  const btnApproveSelected = document.getElementById('btnApproveSelected');
+  const approveNamesEl = document.getElementById('approveNames');
+  const approveCountEl = document.getElementById('approveCount');
+  const btnConfirmBulkApprove = document.getElementById('btnConfirmBulkApprove');
+
+  function getRowChecks() {
+    return Array.from(tableEl.querySelectorAll('tbody .row-check')).filter(cb => !cb.disabled);
+  }
+  function getSelected() {
+    const cbs = getRowChecks().filter(cb => cb.checked);
+    return cbs.map(cb => ({
+      id: cb.getAttribute('data-id'),
+      nama: cb.getAttribute('data-nama')
+    }));
+  }
+  function updateActionButton() {
+    const selected = getSelected();
+    btnApproveSelected.disabled = selected.length === 0;
+  }
+  function updateCheckAllState() {
+    const cbs = getRowChecks();
+    const checked = cbs.filter(cb => cb.checked).length;
+    checkAllEl.checked = (cbs.length > 0 && checked === cbs.length);
+    checkAllEl.indeterminate = (checked > 0 && checked < cbs.length);
+  }
+
+  checkAllEl.addEventListener('change', () => {
+    const cbs = getRowChecks();
+    cbs.forEach(cb => { cb.checked = checkAllEl.checked; });
+    updateActionButton();
+    updateCheckAllState();
+  });
+
+
+  $('#example').on('draw.dt', function () {
+    getRowChecks().forEach(cb => {
+      cb.onchange = () => {
+        updateActionButton();
+        updateCheckAllState();
+      };
+    });
+    // reset header checkbox setiap draw
+    checkAllEl.checked = false;
+    checkAllEl.indeterminate = false;
+    updateActionButton();
+  });
+
+  btnApproveSelected.addEventListener('click', () => {
+    const selected = getSelected();
+    approveNamesEl.innerHTML = '';
+    selected.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.textContent = item.nama + ' (ID: ' + item.id + ')';
+      approveNamesEl.appendChild(li);
+    });
+    approveCountEl.textContent = selected.length;
+  });
+
+  btnConfirmBulkApprove.addEventListener('click', async () => {
+    $("#btnConfirmBulkApprove").html("mohon ditunggu sedang proses update data .... !");
+    $("#btnConfirmBulkApprove").attr("dsiabled",true);
+    const ids = getSelected().map(x => x.id);
+    if (ids.length === 0) return;
+
+    // OPTIONAL: sesuaikan CSRF kalau aktif
+    const csrfName = '<?= csrf_token() ?>';
+    const csrfHash = '<?= csrf_hash() ?>';
+
+    try {
+      const resp = await fetch('<?= base_url("member/bulk-approve") ?>', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        'X-Requested-With': 'XMLHttpRequest',
+        body: JSON.stringify({ ids: getSelected().map(x => x.id) })
+       // body: JSON.stringify({ ids: getSelected().map(x => x.id) })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        alert('Gagal approve: ' + (data.message || resp.statusText));
+        return;
+      }
+
+      // Sukses → reload DataTable & tutup modal
+      $('#modalBulkApprove').modal('hide');
+      $('#example').DataTable().ajax.reload(null, false); // stay on page
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  });
+});
+</script>

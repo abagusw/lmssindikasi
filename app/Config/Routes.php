@@ -50,6 +50,8 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->post('member/getDataMember/(:any)','Member::getDataMember/$1');
 	$routes->post('member/getDataMemberReg','Member::getDataMemberReg');
 	$routes->get('member/registration','Member::indexReg');
+  	$routes->post('member/bulk-approve', 'Member::bulkApprove');
+
 	
 	$routes->get('member/member_detail/(:segment)','Member::getDataMemberDetail/$1');
 	$routes->get('member/member_user_detail/(:segment)','Member::getDataUserDetail/$1');
