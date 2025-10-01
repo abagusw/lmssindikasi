@@ -53,5 +53,13 @@ class MasterSubsektor extends Model
     //     return $query;
     // }
 
+    // for upload CSV
+    public function getSubsektorByNameCSV($name){
+        $builder = $this->db->table($this->table);
+        $builder->where('name like', '%' . $name . '%');
+        $query = $builder->get();
+        $result = $query->getRowArray();
+        return $result ? $result['id'] : null;
+    }
 
 }

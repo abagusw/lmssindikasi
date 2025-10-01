@@ -26,6 +26,9 @@ $routes->get('paymentXXX/pay','MidtransController::index');
 
 $routes->get('setup/setpassword','Setup::setPassword');
 
+$routes->post('importoldmember','ImportOldMember::uploadOldMemberCSV');
+
+$routes->post('importoldmemberpayment','ImportOldMember::uploadLatestPaymentCSV');
 
 $routes->group('/', ['filter' => 'auth'], function ($routes) {
 

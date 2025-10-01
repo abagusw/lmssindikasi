@@ -53,5 +53,14 @@ class MasterCityModel extends Model
             ->get()
             ->getResultArray();
     }
+
+    // for upload CSV
+    public function getCityByName($name){
+        $builder = $this->db->table('ms_city');
+        $builder->where('name like', '%' . $name . '%');
+        $query = $builder->get();
+        $result = $query->getRowArray();
+        return $result ? $result['id'] : null;
+    }
 }
 
