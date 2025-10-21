@@ -8,8 +8,8 @@ class MailjetController extends Controller
 {
     public function sendMailjetEmail()
     {
-        $apiKey = "";
-        $apiSecret = "";
+        $apiKey = "ef002126f3ce08d048586f718b4cddd0";
+        $apiSecret = "5bdfc6bd0cd33414c685c94b6c98567a";
 
         $mj = new Client($apiKey, $apiSecret, true, ['version' => 'v3.1']);
 
