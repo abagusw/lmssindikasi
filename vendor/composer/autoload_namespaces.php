@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'org\\bovigo\\vfs\\' => array($vendorDir . '/mikey179/vfsstream/src/main/php'),
+    'Mailjet' => array($vendorDir . '/mailjet/mailjet-apiv3-php/src'),
 );
