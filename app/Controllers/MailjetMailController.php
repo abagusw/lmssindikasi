@@ -10,8 +10,8 @@ class MailjetMailController extends BaseController
 
     public function __construct()
     {
-        $apiKey = getenv('mailjet.apiKey');
-        $apiSecret = getenv('mailjet.apiSecret');
+        $apiKey = 'ef002126f3ce08d048586f718b4cddd0';
+        $apiSecret = '5bdfc6bd0cd33414c685c94b6c98567a';
 
         $this->mailjet = new \Mailjet\Client($apiKey, $apiSecret, true, ['version' => 'v3.1']);
     }
@@ -22,8 +22,8 @@ class MailjetMailController extends BaseController
             'Messages' => [
                 [
                     'From' => [
-                        'Email' => getenv('mailjet.senderEmail'),
-                        'Name' => getenv('mailjet.senderName')
+                        'Email' => 'tech@sindikasi.org',
+                        'Name' => 'Admin Sindikasi'
                     ],
                     'To' => [
                         [
