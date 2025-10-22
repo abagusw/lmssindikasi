@@ -5,8 +5,9 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use App\Models\MemberModel;
 use App\Models\LogModel;
-use CodeIgniter\Email\Email;
 use App\Libraries\MyEncrypter;
+use Mailjet\Client;
+use Mailjet\Resources;
 
 
 
@@ -16,23 +17,6 @@ class SendEmailCon extends BaseController
     {
         $this->userModel = new UserModel();
         $this->memberModel = new MemberModel();
-    }
-
-    public function testEmail()
-    {
-        $email = \Config\Services::email();
-
-        $email->setTo('devandaandresmg@gmail.com');
-        $email->setSubject('Tes Email SMTP');
-        $email->setMessage('<p>Ini adalah email <strong>tes</strong> menggunakan SMTP.</p>');
-        $email->setMailType('html'); // wajib kalau isinya HTML
-
-        if ($email->send()) {
-            echo 'Email berhasil dikirim!';
-        } else {
-            echo 'Gagal mengirim email:<br>';
-            print_r($email->printDebugger(['headers']));
-        }
     }
 
     public function templateEmail(){
@@ -46,47 +30,52 @@ class SendEmailCon extends BaseController
     }
 
     public function insertLog($desk){
-            $logModel = new LogModel();
-            $dataLog = [
-                'description'   => $desk,
-                'create_date'   => date('Y-m-d H:i:s'),
-                'create_user'   => $this->session->get('nama')
-            ];
+        $logModel = new LogModel();
+        $dataLog = [
+            'description'   => $desk,
+            'create_date'   => date('Y-m-d H:i:s'),
+            'create_user'   => $this->session->get('nama')
+        ];
 
-            $logModel->insert($dataLog);
-
-            // if ($logModel->insert($dataLog)) {
-            //     //echo json_encode(array('msg'=>0,'desc'=>"Sukses Insert Data"));
-            // }
+        $logModel->insert($dataLog);
     }
 
-    public function konfigEmail($to,$subject,$view)
+    public function konfigEmail($toEmail,$toName,$subject,$view)
     {
-        $email = \Config\Services::email();
-        $fromEmail = config('Email')->fromEmail;
-        $fromName  = config('Email')->fromName;
-        $email->setFrom($fromEmail, $fromName);
-        $email->setTo($to);
-        $email->setSubject($subject);
-        $email->setMessage($view);
-        $email->setMailType('html'); // wajib kalau isinya HTML
+        $apiKey = "ef002126f3ce08d048586f718b4cddd0";
+        $apiSecret = "5bdfc6bd0cd33414c685c94b6c98567a";
 
-        if ($email->send()) {
-            //echo 'Email berhasil dikirim!';
-            $desk = "Email berhasil dikirim ke : ".$to." Subject : ".$subject." Tanggal ".date('Y-m-d H:i:s')."";
+        $mj = new Client($apiKey, $apiSecret, true, ['version' => 'v3.1']);
+        
+        $body = [
+            'Messages' => [
+                [
+                    'From' => [
+                        'Email' => "tech@sindikasi.org",
+                        'Name' => "Admin Sindikasi"
+                    ],
+                    'To' => [
+                        [
+                            'Email' => $toEmail,
+                            'Name' => $toName
+                        ]
+                    ],
+                    'Subject' => $subject,
+                    'TextPart' => "Hi, Sindikasi Member",
+                    'HTMLPart' => $view
+                ]
+            ]
+        ];
+
+        $response = $mj->post(Resources::$Email, ['body' => $body]);
+
+        if ($response->success()) {
+            $desk = "Email berhasil dikirim ke : ".$toEmail." Subject : ".$subject." Tanggal ".date('Y-m-d H:i:s')."";
         } else {
-            $desk = "Gagal mengirim email: ".$to." Subject : ".$subject." Tanggal ".date('Y-m-d H:i:s')." error : ".$email->printDebugger(['headers'])."";
+            $desk = "Gagal mengirim email: ".$toEmail." Subject : ".$subject." Tanggal ".date('Y-m-d H:i:s')." error : ".$email->printDebugger(['headers'])."";
         }
 
         $this->insertLog($desk);
-
-
-        // if ($email->send()) {
-        //     echo 'Email berhasil dikirim!';
-        // } else {
-        //     echo 'Gagal mengirim email:<br>';
-        //     print_r($email->printDebugger(['headers']));
-        // }
     }
 
     public function kirimEmailApprove(){
@@ -111,13 +100,9 @@ class SendEmailCon extends BaseController
             'session' => \Config\Services::session()
         ];
         $vw = view('email/bg_approve', $data);
-        $this->konfigEmail($getData['email'],'Akun Anda Telah Disetujui',$vw);
+        $this->konfigEmail($getData['email'],$getData['nama_lengkap'],'Akun Anda Telah Disetujui',$vw);
 
-        return redirect()->to('/member/user/1');
-
-        //print_r($getData)
-
-        //return view('email/bg_approve', $data);        
+        return redirect()->to('/member/user/1');   
     }
 
     public function kirimEmailReject(){
@@ -131,13 +116,9 @@ class SendEmailCon extends BaseController
             'session' => \Config\Services::session()
         ];
         $vw = view('email/bg_reject', $data);
-        $this->konfigEmail($getData['email'],'Akun Anda ditolak / direject',$vw);
+        $this->konfigEmail($getData['email'],$getData['nama_lengkap'], 'Akun Anda ditolak / direject',$vw);
 
         return redirect()->to('member/registration');
-
-        //print_r($getData)
-
-        //return view('email/bg_approve', $data);        
     }
 
     public function kirimEmailResetPassword(){
@@ -151,13 +132,9 @@ class SendEmailCon extends BaseController
             'session' => \Config\Services::session()
         ];
         $vw = view('email/bg_reset_password', $data);
-        $this->konfigEmail($getData['email'],'Reset Password akun anda',$vw);
+        $this->konfigEmail($getData['email'],$getData['nama_lengkap'],'Reset Password akun anda',$vw);
 
-        return redirect()->to('member/user/1');
-
-        //print_r($getData)
-
-        //return view('email/bg_approve', $data);        
+        return redirect()->to('member/user/1');    
     }
 
 
