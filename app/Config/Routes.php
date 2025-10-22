@@ -12,7 +12,6 @@ $routes->get('auth', 'Auth::index');
 $routes->post('auth/login', 'Auth::login');
 //Routes email
 $routes->get('email/testEmail', 'SendEmailCon::testEmail');
-$routes->get('email/sendMailjetEmail', 'MailjetController::sendMailjetEmail');
 $routes->get('email/templateEmail', 'SendEmailCon::templateEmail');
 $routes->get('email/kirimEmailApprove/(:segment)', 'SendEmailCon::kirimEmailApprove/$1');
 $routes->get('email/kirimEmailReject/(:segment)', 'SendEmailCon::kirimEmailReject/$1');
