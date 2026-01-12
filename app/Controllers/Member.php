@@ -237,6 +237,7 @@ class Member extends BaseController
                         // }
                         $btnResend = "";
                         $row[] = $st;
+                        $row[] = $field->create_by_sistem == 1 ? 'Yes' : 'No';
                         $row[] = "<a href=".base_url("member/member_detail/".$field->id."")." class='btn btn-link mb-2'>View</a>
                         ".$btnAppr." ".$btnResend."";
                         $data[] = $row;

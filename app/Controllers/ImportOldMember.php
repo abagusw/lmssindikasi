@@ -286,28 +286,34 @@ class ImportOldMember extends BaseController
     }
 
     public function getAmountByTrxType($trxType) {
-        $map = [
-            'Iuran Awal' => 50000,
-            '3 Bulan' => 75000,
-            '6 Bulan' => 150000,
-            '12 Bulan' => 300000,
-            '24 Bulan' => 600000,
-        ];
-        if (array_key_exists($trxType, $map)) {
-            return $map[$trxType];
+        if (!$trxType) {
+            return 50000;
         } else {
-            return null;
+            return $trxType * 25000;
         }
+        // $map = [
+        //     'Iuran Awal' => 50000,
+        //     '3 Bulan' => 75000,
+        //     '6 Bulan' => 150000,
+        //     '12 Bulan' => 300000,
+        //     '24 Bulan' => 600000,
+        // ];
+        // if (array_key_exists($trxType, $map)) {
+        //     return $map[$trxType];
+        // } else {
+        //     return null;
+        // }
     }
     public function calculateExpiredEtc($latestPaymentDate, $trxType) {
-        $map = [
-            'Iuran Awal' => 2,
-            '3 Bulan' => 3,
-            '6 Bulan' => 6,
-            '12 Bulan' => 12,
-            '24 Bulan' => 24,
-        ];
-        $numberOfMonth = array_key_exists($trxType, $map) ? $map[$trxType] : 0;
+        // $map = [
+        //     'Iuran Awal' => 2,
+        //     '3 Bulan' => 3,
+        //     '6 Bulan' => 6,
+        //     '12 Bulan' => 12,
+        //     '24 Bulan' => 24,
+        // ];
+        // $numberOfMonth = array_key_exists($trxType, $map) ? $map[$trxType] : 0;
+        $numberOfMonth = $trxType ?: 0;
         if ($numberOfMonth > 0) {
             $expired_date = date('Y-m-d', strtotime("+$numberOfMonth months", strtotime($latestPaymentDate)));
 
@@ -326,8 +332,8 @@ class ImportOldMember extends BaseController
         } else {
             return null;
         }
-        if (array_key_exists($trxType, $map)) {
-            return $map[$trxType];
+        if ($trxType) {
+            return $trxType;
         } else {
             return null;
         }

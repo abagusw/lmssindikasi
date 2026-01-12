@@ -139,6 +139,7 @@ $flag = $uri->getSegment(2); ?>
                   <th>Job Title</th>
                   <th>Register Date</th>
                   <th>Status</th>
+                  <th>Old Member</th>
                   <th>Action</th>
               </tr>
           </thead>

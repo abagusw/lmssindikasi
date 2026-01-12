@@ -30,6 +30,9 @@ $routes->post('importoldmember','ImportOldMember::uploadOldMemberCSV');
 
 $routes->post('importoldmemberpayment','ImportOldMember::uploadLatestPaymentCSV');
 
+$routes->get('emailnotif','EmailNotif::index');
+$routes->get('seeemail','EmailNotif::seeEmail');
+
 $routes->group('/', ['filter' => 'auth'], function ($routes) {
 
 	$routes->get('auth/logout', 'Auth::logout');
