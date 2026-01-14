@@ -387,10 +387,17 @@ $flag = $uri->getSegment(3); ?>
             async: false,
             dataType: 'JSON',
             success: function(response) {
-                $.ambiance({message: "Email berhasil dikirim",
+              if (response.msg = 1) {               
+                $.ambiance({message: "Email reset password berhasil dikirim",
                   type: "success",
+                  fade: false}); 
+              } else {
+                $.ambiance({message: "Email reset password gagal dikirim",
+                  type: "error",
                   fade: false});
-                location.reload();
+              }
+              $('#modalResetPassword').modal('hide');
+                // location.reload();
             }
 
         });      

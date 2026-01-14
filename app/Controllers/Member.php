@@ -470,6 +470,8 @@ class Member extends BaseController
 
         if ($logModel->insert($dataLog)) {
             return $this->response->setJSON(array('msg' => 0, 'desc' => "Sukses Insert Data"));
+        } else {
+            return $this->response->setJSON(array('msg' => 1, 'desc' => "Gagal Insert Data"));
         }
     }
 
@@ -722,10 +724,11 @@ class Member extends BaseController
             $desk = "" . $this->session->get('nama') . " sukses mereset password member user ID : " . $id . " tanggal : " . date('Y-m-d H:i:s') . "";
         } else {
             $desk = "" . $this->session->get('nama') . " gagal mereset password member user ID : " . $id . " tanggal : " . date('Y-m-d H:i:s') . "";
+            return $this->response->setJSON(array('msg' => 1, 'desc' => "Gagal mengirim email reset password"));
         }
-        $desk =  json_encode($desk);
+        $desk = json_encode($desk);
 
-        $this->getLog($desk);
+        return $this->getLog($desk);
     }
 
     public function kirimEmailResetPassword($id){
