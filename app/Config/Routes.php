@@ -18,20 +18,19 @@ $routes->get('email/kirimEmailReject/(:segment)', 'SendEmailCon::kirimEmailRejec
 $routes->get('email/kirimEmailResetPassword/(:segment)', 'SendEmailCon::kirimEmailResetPassword/$1');
 
 $routes->get('/midtrans/token', 'MidtransController::token');
-$routes->get('/midtrans/checkout', function() {
-    return view('coba_midtrans/midtrans_checkout');
+$routes->get('/midtrans/checkout', function () {
+	return view('coba_midtrans/midtrans_checkout');
 });
 
-$routes->get('paymentXXX/pay','MidtransController::index');
+$routes->get('paymentXXX/pay', 'MidtransController::index');
 
-$routes->get('setup/setpassword','Setup::setPassword');
+$routes->get('setup/setpassword', 'Setup::setPassword');
 
-$routes->post('importoldmember','ImportOldMember::uploadOldMemberCSV');
+$routes->post('importoldmember', 'ImportOldMember::uploadOldMemberCSV');
 
-$routes->post('importoldmemberpayment','ImportOldMember::uploadLatestPaymentCSV');
+$routes->post('importoldmemberpayment', 'ImportOldMember::uploadLatestPaymentCSV');
 
-$routes->get('emailnotif','EmailNotif::index');
-$routes->get('seeemail','EmailNotif::seeEmail');
+$routes->get('emailnotif', 'EmailNotif::index');
 
 $routes->group('/', ['filter' => 'auth'], function ($routes) {
 
@@ -51,111 +50,101 @@ $routes->group('/', ['filter' => 'auth'], function ($routes) {
 	$routes->patch('user/(:segment)/changestatus', 'User::changeStatus/$1');
 
 	//Routes member Reg//
-	$routes->get('member/user/(:any)','Member::index/$1');
-	
-	$routes->post('member/getDataMember/(:any)','Member::getDataMember/$1');
-	$routes->post('member/getDataMemberReg','Member::getDataMemberReg');
-	$routes->get('member/registration','Member::indexReg');
-  	$routes->post('member/bulk-approve', 'Member::bulkApprove');
+	$routes->get('member/user/(:any)', 'Member::index/$1');
 
-	
-	$routes->get('member/member_detail/(:segment)','Member::getDataMemberDetail/$1');
-	$routes->get('member/member_user_detail/(:segment)','Member::getDataUserDetail/$1');
-	$routes->post('member/ubahStatus','Member::ubahStatus');
-	$routes->get('member/templateEmail','Member::templateEmail');
-	$routes->post('member/kirimEmail','Member::kirimEmail');
-	$routes->post('member/confirmStatusData','Member::confirmStatusData');
-	$routes->post('member/confirmResetPassword','Member::confirmResetPassword');
-	$routes->post('member/getpaymentDetailUser','Member::getpaymentDetailUser');
-	$routes->post('member/ubahStatusDataUser','Member::ubahStatusDataUser');
+	$routes->post('member/getDataMember/(:any)', 'Member::getDataMember/$1');
+	$routes->post('member/getDataMemberReg', 'Member::getDataMemberReg');
+	$routes->get('member/registration', 'Member::indexReg');
+	$routes->post('member/bulk-approve', 'Member::bulkApprove');
+	$routes->post('member/bulk-resend', 'Member::bulkResend');
 
-	$routes->post('member/resetPassword','Member::resetPassword');
+	$routes->get('member/member_detail/(:segment)', 'Member::getDataMemberDetail/$1');
+	$routes->get('member/member_user_detail/(:segment)', 'Member::getDataUserDetail/$1');
+	$routes->post('member/ubahStatus', 'Member::ubahStatus');
+	$routes->get('member/templateEmail', 'Member::templateEmail');
+	$routes->post('member/kirimEmail', 'Member::kirimEmail');
+	$routes->post('member/confirmStatusData', 'Member::confirmStatusData');
+	$routes->post('member/confirmResetPassword', 'Member::confirmResetPassword');
+	$routes->post('member/getpaymentDetailUser', 'Member::getpaymentDetailUser');
+	$routes->post('member/ubahStatusDataUser', 'Member::ubahStatusDataUser');
+
+	$routes->post('member/resetPassword', 'Member::resetPassword');
 
 	//Routes Master //
-	$routes->get('master/branch','Master::branch');
-	$routes->get('master/add_branch','Master::add_branch');
-	$routes->get('master/edit_branch/(:segment)','Master::edit_branch/$1');
-	$routes->post('master/simpanBranch','Master::simpanBranch');
-	$routes->post('master/simpanEditBranch','Master::simpanEditBranch');
-	$routes->post('master/hapusDataBranch','Master::hapusDataBranch');
+	$routes->get('master/branch', 'Master::branch');
+	$routes->get('master/add_branch', 'Master::add_branch');
+	$routes->get('master/edit_branch/(:segment)', 'Master::edit_branch/$1');
+	$routes->post('master/simpanBranch', 'Master::simpanBranch');
+	$routes->post('master/simpanEditBranch', 'Master::simpanEditBranch');
+	$routes->post('master/hapusDataBranch', 'Master::hapusDataBranch');
 
 	//Routes Master City //
-	$routes->get('master/city','Master::city');
-	$routes->get('master/add_city','Master::add_city');
-	$routes->get('master/edit_city/(:segment)','Master::edit_city/$1');
-	$routes->post('master/simpanCity','Master::simpanCity');
-	$routes->post('master/simpanEditCity','Master::simpanEditCity');
-	$routes->post('master/hapusDataCity','Master::hapusDataCity');
-
+	$routes->get('master/city', 'Master::city');
+	$routes->get('master/add_city', 'Master::add_city');
+	$routes->get('master/edit_city/(:segment)', 'Master::edit_city/$1');
+	$routes->post('master/simpanCity', 'Master::simpanCity');
+	$routes->post('master/simpanEditCity', 'Master::simpanEditCity');
+	$routes->post('master/hapusDataCity', 'Master::hapusDataCity');
 
 	//Routes Payment//
-	$routes->get('payment/index','Payment::index');
-	$routes->post('payment/getPayment','Payment::getPayment');
-	$routes->get('payment/index_call_back','Payment::index_call_back');
-	$routes->post('payment/getPaymentCallBack','Payment::getPaymentCallBack');
+	$routes->get('payment/index', 'Payment::index');
+	$routes->post('payment/getPayment', 'Payment::getPayment');
+	$routes->get('payment/index_call_back', 'Payment::index_call_back');
+	$routes->post('payment/getPaymentCallBack', 'Payment::getPaymentCallBack');
 
 	//Routes Master Course //
-	$routes->get('master/course','Master::course');
-	$routes->get('master/add_course','Master::add_course');
-	$routes->post('master/getDataCourse','Master::getDataCourse');
-	$routes->post('master/simpanCourse','Master::simpanCourse');
-	$routes->post('master/simpanCourseEdit','Master::simpanCourseEdit');
-	$routes->get('master/detail_course/(:segment)','Master::detailCourse/$1');
-	$routes->get('master/edit_course/(:segment)','Master::editCourse/$1');
-	$routes->post('master/simpanLessonCourse','Master::simpanLessonCourse');
-	$routes->post('master/hapusCourseLesson','Master::hapusCourseLesson');
-	$routes->post('master/ubahStatusCourse','Master::ubahStatusCourse');
-	$routes->get('master/detail_course_lesson/(:segment)','Master::detail_course_lesson/$1');
-	$routes->get('master/detail_course_participant/(:segment)','Master::detail_course_participant/$1');
+	$routes->get('master/course', 'Master::course');
+	$routes->get('master/add_course', 'Master::add_course');
+	$routes->post('master/getDataCourse', 'Master::getDataCourse');
+	$routes->post('master/simpanCourse', 'Master::simpanCourse');
+	$routes->post('master/simpanCourseEdit', 'Master::simpanCourseEdit');
+	$routes->get('master/detail_course/(:segment)', 'Master::detailCourse/$1');
+	$routes->get('master/edit_course/(:segment)', 'Master::editCourse/$1');
+	$routes->post('master/simpanLessonCourse', 'Master::simpanLessonCourse');
+	$routes->post('master/hapusCourseLesson', 'Master::hapusCourseLesson');
+	$routes->post('master/ubahStatusCourse', 'Master::ubahStatusCourse');
+	$routes->get('master/detail_course_lesson/(:segment)', 'Master::detail_course_lesson/$1');
+	$routes->get('master/detail_course_participant/(:segment)', 'Master::detail_course_participant/$1');
 	$routes->post('master/update-order-course', 'Master::update_order_course');
 
-
-
-
 	//Routes Master Lesson //
-	$routes->get('master/lesson','Master::lesson');
+	$routes->get('master/lesson', 'Master::lesson');
 	$routes->get('master/getDatalesson', 'Master::getDatalesson');
 	$routes->post('master/getDatalessonByCourse', 'Master::getDatalessonByCourse');
-	$routes->get('master/sinkronLesson','Master::sinkronLesson');
-	$routes->post('master/ubahStatusLesson','Master::ubahStatusLesson');	
-
+	$routes->get('master/sinkronLesson', 'Master::sinkronLesson');
+	$routes->post('master/ubahStatusLesson', 'Master::ubahStatusLesson');
 
 	//Routes Master Course Topic //
-	$routes->get('master/course_topic','Master::course_topic');
-	$routes->get('master/add_course_topic','Master::add_course_topic');
-	$routes->get('master/edit_course_topic/(:segment)','Master::edit_course_topic/$1');
-	$routes->post('master/simpanCourseTopic','Master::simpanCourseTopic');
-	$routes->post('master/simpanEditCourseTopic','Master::simpanEditCourseTopic');
-	$routes->post('master/hapusDataCourseTopic','Master::hapusDataCourseTopic');
-
+	$routes->get('master/course_topic', 'Master::course_topic');
+	$routes->get('master/add_course_topic', 'Master::add_course_topic');
+	$routes->get('master/edit_course_topic/(:segment)', 'Master::edit_course_topic/$1');
+	$routes->post('master/simpanCourseTopic', 'Master::simpanCourseTopic');
+	$routes->post('master/simpanEditCourseTopic', 'Master::simpanEditCourseTopic');
+	$routes->post('master/hapusDataCourseTopic', 'Master::hapusDataCourseTopic');
 
 	//Routes Master Subsektor //
-	$routes->get('master/subsektor','Master::subsektor');
-	$routes->get('master/add_subsektor','Master::add_subsektor');
-	$routes->get('master/edit_subsektor/(:segment)','Master::edit_subsektor/$1');
-	$routes->post('master/simpanSubsektor','Master::simpanSubsektor');
-	$routes->post('master/simpanEditSubsektor','Master::simpanEditSubsektor');
-	$routes->post('master/hapusDataSubsektor','Master::hapusDataSubsektor');	
+	$routes->get('master/subsektor', 'Master::subsektor');
+	$routes->get('master/add_subsektor', 'Master::add_subsektor');
+	$routes->get('master/edit_subsektor/(:segment)', 'Master::edit_subsektor/$1');
+	$routes->post('master/simpanSubsektor', 'Master::simpanSubsektor');
+	$routes->post('master/simpanEditSubsektor', 'Master::simpanEditSubsektor');
+	$routes->post('master/hapusDataSubsektor', 'Master::hapusDataSubsektor');
 
 	//Routes Master Jabatan //
-	$routes->get('master/jabatan','Master::jabatan');
-	$routes->get('master/add_jabatan','Master::add_jabatan');
-	$routes->get('master/edit_jabatan/(:segment)','Master::edit_jabatan/$1');
-	$routes->post('master/simpanJabatan','Master::simpanJabatan');
-	$routes->post('master/simpanEditJabatan','Master::simpanEditJabatan');
-	$routes->post('master/hapusDataJabatan','Master::hapusDataJabatan');
-
+	$routes->get('master/jabatan', 'Master::jabatan');
+	$routes->get('master/add_jabatan', 'Master::add_jabatan');
+	$routes->get('master/edit_jabatan/(:segment)', 'Master::edit_jabatan/$1');
+	$routes->post('master/simpanJabatan', 'Master::simpanJabatan');
+	$routes->post('master/simpanEditJabatan', 'Master::simpanEditJabatan');
+	$routes->post('master/hapusDataJabatan', 'Master::hapusDataJabatan');
 
 	//Routes Course Analytic//
-	$routes->get('master/course_analytic','Master::course_analytic');
-	$routes->post('master/getCourseAnalytic','Master::getCourseAnalytic');
-	$routes->get('master/course_analytic_participant/(:segment)','Master::course_analytic_participant/$1');
-	$routes->get('master/add_course_analytic','Master::add_course_analytic');
-	$routes->get('master/edit_course_analytic/(:segment)','Master::edit_course_analytic/$1');
-	$routes->post('master/simpanCourseAnalytic','Master::simpanCourseAnalytic');
-	$routes->post('master/simpanEditCourseAnalytic','Master::simpanEditCourseAnalytic');
-	$routes->post('master/hapusDataCourseAnalytic','Master::hapusDataCourseAnalytic');	
-
-
+	$routes->get('master/course_analytic', 'Master::course_analytic');
+	$routes->post('master/getCourseAnalytic', 'Master::getCourseAnalytic');
+	$routes->get('master/course_analytic_participant/(:segment)', 'Master::course_analytic_participant/$1');
+	$routes->get('master/add_course_analytic', 'Master::add_course_analytic');
+	$routes->get('master/edit_course_analytic/(:segment)', 'Master::edit_course_analytic/$1');
+	$routes->post('master/simpanCourseAnalytic', 'Master::simpanCourseAnalytic');
+	$routes->post('master/simpanEditCourseAnalytic', 'Master::simpanEditCourseAnalytic');
+	$routes->post('master/hapusDataCourseAnalytic', 'Master::hapusDataCourseAnalytic');
 });
-

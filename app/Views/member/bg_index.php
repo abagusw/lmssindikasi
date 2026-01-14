@@ -126,9 +126,15 @@ $flag = $uri->getSegment(3); ?>
   </div>
 
   <div class="col-lg-12">
+    <button id="btnResendSelected" class="btn btn-success mb-3" disabled data-bs-toggle="modal" data-bs-target="#modalBulkResend">
+      Resend Email Selected
+    </button>
     <table id="example"class="table table-bordered table-striped table-hover align-middle">
           <thead>
               <tr>
+                  <th style="width:36px;">
+                    <input type="checkbox" id="checkAll" />
+                  </th>
                   <th>#</th>
                   <th>Nomor Anggota</th>
                   <th>Fullname</th>
@@ -165,6 +171,27 @@ $flag = $uri->getSegment(3); ?>
   <!--end::Col-->
 </div>
 
+<div class="modal fade" id="modalBulkResend" tabindex="-1" aria-labelledby="modalBulkResendLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalBulkResendLabel">Konfirmasi Resend</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <p>Kirim ulang invitation email ke <span id="resendCount">0</span> anggota berikut:</p>
+        <ul id="resendNames" class="list-group"></ul>
+        <div class="alert alert-warning mt-3 mb-0">
+          Email hanya akan dikirim ke member yang sudah <strong>disetujui</strong> dan <strong>belum</strong> membuat password .
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnConfirmBulkResend" type="button" class="btn btn-success">Resend</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
     var table;
@@ -293,7 +320,7 @@ $flag = $uri->getSegment(3); ?>
             dataType: 'JSON',
             success: function(msg) {
               $("#bodyModalStatusData").html(msg.msg);
-              if(flag == 0){
+              if(flag == 0 || flag == 3){
                 //jika status pending maka kiirm email saja (resend)
                 $("#btnStatusData").attr('onclick','kirimEmail('+id+','+msg.url+')');
               }else{
@@ -368,6 +395,114 @@ $flag = $uri->getSegment(3); ?>
 
         });      
     }    
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tableEl = document.getElementById('example');
+    const checkAllEl = document.getElementById('checkAll');
+
+    const btnResendSelected = document.getElementById('btnResendSelected');
+    const resendNamesEl = document.getElementById('resendNames');
+    const resendCountEl = document.getElementById('resendCount');
+    const btnConfirmBulkResend = document.getElementById('btnConfirmBulkResend');
+
+    function getRowChecks() {
+      return Array.from(tableEl.querySelectorAll('tbody .row-check')).filter(cb => !cb.disabled);
+    }
+
+    function getSelected() {
+      const cbs = getRowChecks().filter(cb => cb.checked);
+      return cbs.map(cb => ({
+        id: cb.getAttribute('data-id'),
+        nama: cb.getAttribute('data-nama')
+      }));
+    }
+
+    function updateActionButton() {
+      const selected = getSelected();
+      btnResendSelected.disabled = selected.length === 0;
+    }
+
+    function updateCheckAllState() {
+      const cbs = getRowChecks();
+      const checked = cbs.filter(cb => cb.checked).length;
+      checkAllEl.checked = (cbs.length > 0 && checked === cbs.length);
+      checkAllEl.indeterminate = (checked > 0 && checked < cbs.length);
+    }
+
+    checkAllEl.addEventListener('change', () => {
+      const cbs = getRowChecks();
+      cbs.forEach(cb => {
+        cb.checked = checkAllEl.checked;
+      });
+      updateActionButton();
+      updateCheckAllState();
+    });
+
+
+    $('#example').on('draw.dt', function() {
+      getRowChecks().forEach(cb => {
+        cb.onchange = () => {
+          updateActionButton();
+          updateCheckAllState();
+        };
+      });
+      // reset header checkbox setiap draw
+      checkAllEl.checked = false;
+      checkAllEl.indeterminate = false;
+      updateActionButton();
+    });
+
+    btnResendSelected.addEventListener('click', () => {
+      const selected = getSelected();
+      resendNamesEl.innerHTML = '';
+      selected.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+        li.textContent = item.nama + ' (ID: ' + item.id + ')';
+        resendNamesEl.appendChild(li);
+      });
+      resendCountEl.textContent = selected.length;
+    });
+
+    btnConfirmBulkResend.addEventListener('click', async () => {
+      $("#btnConfirmBulkResend").html("mohon ditunggu sedang proses update data .... !");
+      $("#btnConfirmBulkResend").attr("disabled", true);
+      const ids = getSelected().map(x => x.id);
+      if (ids.length === 0) return;
+
+      // OPTIONAL: sesuaikan CSRF kalau aktif
+      const csrfName = '<?= csrf_token() ?>';
+      const csrfHash = '<?= csrf_hash() ?>';
+
+      try {
+        const resp = await fetch('<?= base_url("member/bulk-resend") ?>', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          'X-Requested-With': 'XMLHttpRequest',
+          body: JSON.stringify({
+            ids: getSelected().map(x => x.id)
+          })
+          // body: JSON.stringify({ ids: getSelected().map(x => x.id) })
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          alert('Gagal resend: ' + (data.message || resp.statusText));
+          return;
+        }
+
+        // Sukses → reload DataTable & tutup modal
+        $('#modalBulkResend').modal('hide');
+        $("#btnConfirmBulkResend").html("Resend");
+        $("#btnConfirmBulkResend").attr("disabled", false);
+        $('#example').DataTable().ajax.reload(null, false); // stay on page
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    });
+  });
 </script>
 
 
