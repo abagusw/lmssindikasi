@@ -8,6 +8,9 @@ $flag = $uri->getSegment(2); ?>
 <?php
 function tanggal_indonesia($tanggal)
 {
+    if (empty($tanggal)) {
+        return '';
+    }
     $bulan = [
         '01' => 'Januari',
         '02' => 'Februari',
@@ -110,7 +113,7 @@ function tanggal_indonesia($tanggal)
           <div class="row mb-3">
             <label for="inputEmail3" class="col-sm-2 col-form-label">Tempat Lahir</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="<?php echo $getData['tempat_lahir'] ?>" readonly />
+              <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="<?php echo $getData['tempat_lahir_name'] ?>" readonly />
             </div>
           </div>
           <div class="row mb-3">
@@ -122,13 +125,13 @@ function tanggal_indonesia($tanggal)
           <div class="row mb-3">
             <label for="inputEmail3" class="col-sm-2 col-form-label">Domisili</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="domisili" name="domisili" value="<?php echo $getData['domisili'] ?>" readonly />
+              <input type="text" class="form-control" id="domisili" name="domisili" value="<?php echo $getData['domisili_name'] ?>" readonly />
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputEmail3" class="col-sm-2 col-form-label">Subsektor</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="subsektor" name="subsektor" value="<?php echo $getData['subsektor'] ?>" readonly />
+              <input type="text" class="form-control" id="subsektor" name="subsektor" value="<?php echo $getData['subsektor_name'] ?>" readonly />
             </div>
           </div>
           <div class="row mb-3">

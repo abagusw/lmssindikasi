@@ -8,6 +8,10 @@ $flag = $uri->getSegment(3); ?>
 <?php
 function tanggal_indonesia($tanggal)
 {
+    if (empty($tanggal)) {
+        return '';
+    }
+
     $bulan = [
         '01' => 'Januari',
         '02' => 'Februari',
@@ -144,7 +148,7 @@ if($getData['flag_active'] == 0){
 		      </div>
 		      <div class="col-md-6">
 		        <label class="form-label">Tempat lahir (Kota)</label>
-		        <input type="text" class="form-control" value="<?php echo $getData['tempat_lahir'] ?>" readonly>
+		        <input type="text" class="form-control" value="<?php echo $getData['tempat_lahir_name'] ?>" readonly>
 		      </div>
 		      <div class="col-md-6">
 		        <label class="form-label">Tanggal lahir</label>
@@ -152,7 +156,7 @@ if($getData['flag_active'] == 0){
 		      </div>
 		      <div class="col-md-6">
 		        <label class="form-label">Kota domisili</label>
-		        <input type="text" class="form-control" value="<?php echo $getData['domisili'] ?>" readonly>
+		        <input type="text" class="form-control" value="<?php echo $getData['domisili_name'] ?>" readonly>
 		      </div>
 		      <div class="col-md-6">
 		        <label class="form-label">Pendidikan terakhir</label>

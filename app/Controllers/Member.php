@@ -392,11 +392,17 @@ class Member extends BaseController
     {
         $uri = service('uri');
         $flag = $uri->getSegment(3);
+        $cityModel = new MasterCityModel();
+        $subSektor = new MasterSubsektor();
+        $memberData = $this->memberModel->find($flag);
+        $memberData['domisili_name'] = $cityModel->getCityById($memberData['domisili']);
+        $memberData['tempat_lahir_name'] = $cityModel->getCityById($memberData['tempat_lahir']);
+        $memberData['subsektor_name'] = $subSektor->getSubSektorById($memberData['subsektor']);
         $data = [
             'title' => 'Member Registration Detail',
             'user_logged_in' => $this->userModel->find($this->session->get('id')),
 
-            'getData' => $this->memberModel->find($flag),
+            'getData' => $memberData,
             'session' => \Config\Services::session()
         ];
         return view('member/bg_detail', $data);
@@ -408,11 +414,15 @@ class Member extends BaseController
         $uri = service('uri');
         $flag = $uri->getSegment(3);
         $paymentHistory = $this->request->getGet('payment_history');
+        $cityModel = new MasterCityModel();
+        $memberData = $this->memberModel->find($flag);
+        $memberData['domisili_name'] = $cityModel->getCityById($memberData['domisili']);
+        $memberData['tempat_lahir_name'] = $cityModel->getCityById($memberData['tempat_lahir']);
         $data = [
             'title' => 'Member User Detail',
             'user_logged_in' => $this->userModel->find($this->session->get('id')),
 
-            'getData' => $this->memberModel->find($flag),
+            'getData' => $memberData,
             'session' => \Config\Services::session(),
             'paymentHistory' => $paymentHistory
         ];
@@ -732,11 +742,21 @@ class Member extends BaseController
     }
 
     public function kirimEmailResetPassword($id){
+        $encrypter = new MyEncrypter();
         $getData = $this->memberModel->find($id);
+
+        $dataGenerate = json_encode([
+            'id' => $getData['id'],
+            'fullname' => $getData['nama_lengkap'],
+            'email'    => $getData['email'],
+            'generateDate' => date('Y-m-d H:i:s'),
+        ]);
+        $ciphertext = $encrypter->encrypt($dataGenerate); 
         $data = [
             'title' => 'Reset Password',
             'user_logged_in' => $this->userModel->find($this->session->get('id')),
             'getData' => $this->memberModel->find($id),
+            'ciphertext' => $ciphertext,
             'session' => \Config\Services::session()
         ];
         $vw = view('email/bg_reset_password', $data);
